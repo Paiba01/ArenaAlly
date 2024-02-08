@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-config:/data/configdb
+      - mongo-data:/data/db
+
+  mongo-express:
+    depends_on:
+      - mongo
+    image: mongo-express:latest
+    ports:
+      - 8081:8081
+    restart: unless-stopped
+
+volumes:
+  mongo-config:
+  mongo-data:
