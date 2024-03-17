@@ -4,7 +4,6 @@ import UserId from './id'
 import UserName from './name'
 import UserEmail from './email'
 import UserPassword from './password'
-import UserIsWorking from './isWorking'
 
 
 class User extends AggregateRoot {
@@ -12,14 +11,14 @@ class User extends AggregateRoot {
     private _name:          UserName
     private _email:         UserEmail
     private _password:      UserPassword
-    private _isWorking:     UserIsWorking
+    private _isWorking:     boolean
 
     private constructor(
         id:         UserId,
         name:       UserName,
         email:      UserEmail,
         password:   UserPassword,
-        isWorking:  UserIsWorking,
+        isWorking:  boolean,
     ){
         super()
         this._id            = id
@@ -34,16 +33,14 @@ class User extends AggregateRoot {
         name,
         email,
         password,
-        isWorking,
     }: {
         id: UserId
         name: UserName
         email: UserEmail
         password: UserPassword
-        isWorking: UserIsWorking
 
     }) {
-        return new this(id, name, email, password, isWorking)
+        return new this(id, name, email, password, false)
     }
 
     get id(): UserId {
@@ -62,7 +59,7 @@ class User extends AggregateRoot {
         return this._password
     }
 
-    get isWorking(): UserIsWorking {
+    get isWorking(): boolean {
         return this._isWorking
     }
 }
