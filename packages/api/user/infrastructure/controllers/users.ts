@@ -20,6 +20,7 @@ import { CreateUserDto } from '~/user/dto/request/create-user'
 import HttpError from '~/shared/http/error'
 import { UserDto } from '~/user/dto/response/user'
 import { GetUserHandler } from '~/user/application/queries/handlers/get-user'
+import { GetUser } from '~/user/application/queries/get-user'
   
   @ApiTags('Users')
   @Controller('users')
