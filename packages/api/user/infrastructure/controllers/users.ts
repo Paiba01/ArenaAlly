@@ -2,27 +2,53 @@ import {
     BadRequestException,
     Body,
     Controller,
+    Get,
+    Param,
     Post
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
     ApiBadRequestResponse,
     ApiCreatedResponse,
+    ApiOkResponse,
     ApiOperation,
     ApiTags
 } from '@nestjs/swagger'
-import { CreateUser } from '~/User/application/commands/create-user'
-import { CreateUserHandler } from '~/User/application/commands/handlers/create-user'
-import { CreateUserDto } from '~/User/dto/request/create-user'
+import { CreateUser } from '~/user/application/commands/create-user'
+import { CreateUserHandler } from '~/user/application/commands/handlers/create-user'
+import { CreateUserDto } from '~/user/dto/request/create-user'
 import HttpError from '~/shared/http/error'
+import { UserDto } from '~/user/dto/response/user'
+import { GetUserHandler } from '~/user/application/queries/handlers/get-user'
   
   @ApiTags('Users')
   @Controller('users')
   export class UsersController {
     constructor(
       private readonly commandBus: CommandBus,
+      private readonly queryBus: QueryBus,
     ) {}
+    
+    @ApiOperation({ summary: 'Get a User' })
+    @ApiOkResponse({
+      description: 'Users',
+      type: UserDto,
+    })
+    @Get(':id')
+    async getUser(@Param('id') id: string): Promise<UserDto> {
+      const response: Awaited<ReturnType<GetUserHandler['execute']>> =
+        await this.queryBus.execute(
+          GetUser.with({
+            id,
+          }),
+        )
   
+      if (response.isErr())
+        throw new BadRequestException(HttpError.fromException(response.error))
+  
+      return response.value
+    }
+
     @ApiOperation({ summary: 'Creates an User' })
     @ApiCreatedResponse({
       description: 'User created',

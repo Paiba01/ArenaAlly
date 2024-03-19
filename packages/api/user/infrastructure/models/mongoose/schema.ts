@@ -1,5 +1,5 @@
 import { Prop, Schema } from '@nestjs/mongoose'
-import User from '~/User/domain/models/user'
+import User from '~/user/domain/models/user'
 
 @Schema({ versionKey: false })
 export class UserSchema {

@@ -1,17 +1,17 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateUser } from "../create-user";
 import { InvalidId } from "~/shared/domain";
-import InvalidUserName from "~/User/domain/exceptions/invalid-name";
-import InvalidUserEmail from "~/User/domain/exceptions/invalid-email";
-import InvalidUserPassword from "~/User/domain/exceptions/invalid-password";
+import InvalidUserName from "~/user/domain/exceptions/invalid-name";
+import InvalidUserEmail from "~/user/domain/exceptions/invalid-email";
+import InvalidUserPassword from "~/user/domain/exceptions/invalid-password";
 import { Result, err, ok } from "neverthrow";
-import UserId from "~/User/domain/models/id";
-import UserName from "~/User/domain/models/name";
-import UserEmail from "~/User/domain/models/email";
-import UserPassword from "~/User/domain/models/password";
-import User from "~/User/domain/models/user";
+import UserId from "~/user/domain/models/id";
+import UserName from "~/user/domain/models/name";
+import UserEmail from "~/user/domain/models/email";
+import UserPassword from "~/user/domain/models/password";
+import User from "~/user/domain/models/user";
 import { Inject } from "@nestjs/common";
-import Users from "~/User/domain/services/users";
+import Users from "~/user/domain/services/users";
 
 @CommandHandler(CreateUser)
 export class CreateUserHandler implements ICommandHandler {

@@ -6,7 +6,7 @@ import { ConsoleModule } from 'nestjs-console'
 import LoggerMiddleware from '~/middleware/logger'
 
 import ScopeModule from './scope/infrastructure/module'
-import { UserModule } from './User/infrastructure/module'
+import { UserModule } from './user/infrastructure/module'
 
 @Module({
   imports: [
