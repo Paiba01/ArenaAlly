@@ -4,7 +4,8 @@ import {
     Controller,
     Get,
     Param,
-    Post
+    Post,
+    Put
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
@@ -22,6 +23,9 @@ import { UserDto } from '~/user/dto/response/user'
 import { GetUserHandler } from '~/user/application/queries/handlers/get-user'
 import { GetUser } from '~/user/application/queries/get-user'
 import { GetUsers } from '~/user/application/queries/get-users'
+import { EditUserDto } from '~/user/dto/request/edit-user'
+import { EditUserHandler } from '~/user/application/commands/handlers/edit-user'
+import { EditUser } from '~/user/application/commands/edit-user'
   
   @ApiTags('Users')
   @Controller('users')
@@ -81,5 +85,28 @@ import { GetUsers } from '~/user/application/queries/get-users'
       if (response.isErr())
         throw new BadRequestException(HttpError.fromException(response.error))
     } 
+
+
+  @ApiOperation({ summary: 'Edits an User' })
+  @ApiOkResponse({
+    description: 'User edited',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @Put(':id')
+  async editUser(@Body() dto: EditUserDto, @Param('id') id: string) {
+    const response: Awaited<ReturnType<EditUserHandler['execute']>> =
+      await this.commandBus.execute(
+        EditUser.with({
+          id,
+          name: dto.name,
+          email: dto.email,
+          password: dto.password,
+          isActive: dto.isActive,
+        }),
+      )
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+  }
   }
   

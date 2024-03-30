@@ -11,21 +11,21 @@ class User extends AggregateRoot {
     private _name:          UserName
     private _email:         UserEmail
     private _password:      UserPassword
-    private _isWorking:     boolean
+    private _isActive:     boolean
 
     private constructor(
         id:         UserId,
         name:       UserName,
         email:      UserEmail,
         password:   UserPassword,
-        isWorking:  boolean,
+        isActive:  boolean,
     ){
         super()
         this._id            = id
         this._name          = name
         this._email         = email
         this._password      = password
-        this._isWorking     = isWorking
+        this._isActive     = isActive
     }
     //DUDA SOBRE ISWORKING
     static create({
@@ -59,8 +59,8 @@ class User extends AggregateRoot {
         return this._password
     }
 
-    get isWorking(): boolean {
-        return this._isWorking
+    get isActive(): boolean {
+        return this._isActive
     }
 }
 
