@@ -21,6 +21,7 @@ import HttpError from '~/shared/http/error'
 import { UserDto } from '~/user/dto/response/user'
 import { GetUserHandler } from '~/user/application/queries/handlers/get-user'
 import { GetUser } from '~/user/application/queries/get-user'
+import { GetUsers } from '~/user/application/queries/get-users'
   
   @ApiTags('Users')
   @Controller('users')
@@ -30,6 +31,16 @@ import { GetUser } from '~/user/application/queries/get-user'
       private readonly queryBus: QueryBus,
     ) {}
     
+    @ApiOperation({ summary: 'Gets all Users' })
+    @ApiOkResponse({
+      description: 'Users',
+      type: [UserDto],
+    })
+    @Get()
+    async getUsers(): Promise<UserDto[]> {
+      return await this.queryBus.execute(GetUsers.all())
+    }
+
     @ApiOperation({ summary: 'Get a User' })
     @ApiOkResponse({
       description: 'Users',
