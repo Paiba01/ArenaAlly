@@ -9,24 +9,24 @@ class Match extends AggregateRoot {
     private _id:        MatchId
     private _local:     Team
     private _visitor:   Team
-    private _referee1:  Referee
-    private _referee2:  Referee
+    private _referee1:  Referee | null
+    private _referee2:  Referee | null
     private _day:       Day
 
     private constructor(
         id:         MatchId,
         local:      Team,
         visitor:    Team,
-        referee1:   Referee,
-        referee2:   Referee,
+        referee1:   Referee | null,
+        referee2:   Referee | null,
         day:        Day,
     ) {
         super()
         this._id            = id
         this._local         = local
         this._visitor       = visitor
-        this._referee1      = referee1
-        this._referee2      = referee2
+        this._referee1      = referee1 || null
+        this._referee2      = referee2 || null
         this._day           = day
     }
 
@@ -35,13 +35,17 @@ class Match extends AggregateRoot {
         local,
         visitor,
         day,
+        referee1 = null, 
+        referee2 = null,
     }:{
         id:         MatchId
         local:      Team
         visitor:    Team
         day:        Day
+        referee1?:  Referee | null
+        referee2?:  Referee | null
     }) {
-        return new this(id,local,visitor, null, null, day)
+        return new this(id,local,visitor, referee1, referee2, day)
     }
 
     get id(): MatchId {
@@ -57,11 +61,11 @@ class Match extends AggregateRoot {
     }
 
     get referee1(): Referee {
-        return this._referee1
+        return this._referee1 || new NullReferee()
     }
 
     get referee2(): Referee {
-        return this._referee2
+        return this._referee2 || new NullReferee()
     }
 
     get day(): Day {
@@ -70,3 +74,9 @@ class Match extends AggregateRoot {
 }
 
 export default Match
+
+class NullReferee extends Referee {
+    constructor() {
+        super('NullReferee')
+    }
+}

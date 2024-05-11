@@ -9,7 +9,7 @@ class Referee extends ValueObject<string> {
       super(value)
     }
   
-    static fromString(value: string): Result<Referee, InvalidId> {
+    static fromString(value: string): Result<Referee | null, InvalidId> {
       const isBlank = !value.toString().trim()
       if (isBlank) return err(InvalidId.causeIsBlank())
   
