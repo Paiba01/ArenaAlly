@@ -7,6 +7,7 @@ import { GetUserHandler } from '../application/queries/handlers/get-user'
 import { UsersController } from './controllers/users'
 import { UserSchema } from './models/mongoose/schema'
 import { userProviders } from './providers'
+import { GetUsersHandler } from '../application/queries/handlers/get-users'
 
 const controllers = [UsersController]
 
@@ -14,7 +15,7 @@ const commandHandlers = [
   CreateUserHandler,
 ]
 
-const queryHandlers = [GetUserHandler]
+const queryHandlers = [GetUserHandler, GetUsersHandler]
 
 @Module({
   controllers,
