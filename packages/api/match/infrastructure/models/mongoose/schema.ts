@@ -1,7 +1,5 @@
 import { Prop, Schema } from '@nestjs/mongoose'
 import Match from '~/match/domain/models/match'
-
-
 @Schema({ versionKey: false })
 export class MatchSchema {
   @Prop()

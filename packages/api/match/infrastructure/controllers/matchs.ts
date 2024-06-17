@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Post
@@ -18,6 +19,8 @@ import HttpError from '~/shared/http/error'
 import { CreateMatchDto } from '~/match/dto/request/create-match'
 import { CreateMatchHandler } from '~/match/application/commands/handlers/create-match'
 import { CreateMatch } from '~/match/application/commands/create-match'
+import { DeleteMatchHandler } from '~/match/application/commands/handlers/delete-match'
+import { DeleteMatch } from '~/match/application/commands/delete-match'
   
   @ApiTags('Matchs')
   @Controller('matchs')
@@ -46,5 +49,19 @@ import { CreateMatch } from '~/match/application/commands/create-match'
       if (response.isErr())
         throw new BadRequestException(HttpError.fromException(response.error))
     } 
+
+  @ApiOperation({ summary: 'Deletes a Match' })
+  @ApiOkResponse({
+    description: 'Match deleted',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @Delete(':id')
+  async deleteMatch(@Param('id') id: string) {
+    const response: Awaited<ReturnType<DeleteMatchHandler['execute']>> =
+      await this.commandBus.execute(DeleteMatch.with({ id }))
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
   }
+}
   

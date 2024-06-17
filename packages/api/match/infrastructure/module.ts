@@ -5,13 +5,14 @@ import { MatchsController } from './controllers/matchs'
 import { CreateMatchHandler } from '../application/commands/handlers/create-match'
 import { MatchSchema } from './models/mongoose/schema'
 import { matchProviders } from './providers'
-
+import { DeleteMatchHandler } from '../application/commands/handlers/delete-match'
 
 
 const controllers = [MatchsController]
 
 const commandHandlers = [
   CreateMatchHandler,
+  DeleteMatchHandler,
 ]
 
 @Module({
