@@ -11,7 +11,7 @@ class UserName extends ValueObject<string> {
     const isBlank = !value.trim()
 
     if (isBlank) return err(InvalidUserName.causeIsBlank())
-
+    
     return ok(new this(value))
   }
 }
