@@ -6,6 +6,8 @@ import { CreateMatchHandler } from '../application/commands/handlers/create-matc
 import { MatchSchema } from './models/mongoose/schema'
 import { matchProviders } from './providers'
 import { DeleteMatchHandler } from '../application/commands/handlers/delete-match'
+import { GetMatchHandler } from '../application/queries/handlers/get-match'
+import { GetMatchsHandler } from '../application/queries/handlers/get-matchs'
 
 
 const controllers = [MatchsController]
@@ -14,6 +16,8 @@ const commandHandlers = [
   CreateMatchHandler,
   DeleteMatchHandler,
 ]
+
+const queryHandlers = [GetMatchHandler, GetMatchsHandler]
 
 @Module({
   controllers,
@@ -26,7 +30,7 @@ const commandHandlers = [
       },
     ]),
   ],
-  providers: [...commandHandlers, ...matchProviders],
+  providers: [...commandHandlers, ...queryHandlers, ...matchProviders],
 })
 export class MatchModule {
   constructor() {}
