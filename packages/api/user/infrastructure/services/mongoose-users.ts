@@ -18,7 +18,7 @@ export class MongooseUsers implements Users {
     await this.users
       .updateOne(
         { _id: user.id.value },
-        { name: user.name.value, email: user.email.value, password: user.password.value, isActive: user.isActive.valueOf },
+        { name: user.name.value, email: user.email.value, password: user.password.value, isActive: user.isActive },
       )
       .lean()
       .exec()

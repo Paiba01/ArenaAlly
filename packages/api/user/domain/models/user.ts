@@ -33,14 +33,15 @@ class User extends AggregateRoot {
         name,
         email,
         password,
+        isActive,
     }: {
         id: UserId
         name: UserName
         email: UserEmail
         password: UserPassword
-
+        isActive: boolean
     }) {
-        return new this(id, name, email, password, false)
+        return new this(id, name, email, password, isActive)
     }
 
     get id(): UserId {
