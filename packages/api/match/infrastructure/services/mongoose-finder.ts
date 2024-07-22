@@ -22,11 +22,23 @@ export class MongooseMatchsFinder implements MatchsFinder {
 
     if (!match) return err(NotFoundMatch.withId(id.value))
 
-    return ok(match)
+      const matchDto: MatchDto = {
+        ...match.toObject(),
+        day: match.day instanceof Date ? match.day.toISOString() : match.day,
+      }
+  
+    return ok(matchDto)
   }
 
   async getAll(): Promise<MatchDto[]> {
-    return await this.matchs.find().exec()
+    const matches = await this.matchs.find().exec()
+    
+    // Convertir cada documento a MatchDto
+    return matches.map(match => ({
+      ...match.toObject(),
+      day: match.day instanceof Date ? match.day.toISOString() : match.day,
+      
+    }))
   }
 }
 

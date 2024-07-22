@@ -15,6 +15,6 @@ export class CreateMatchDto {
   readonly visitor: string
 
   @ApiProperty()
-  @IsNumber()
-  readonly day: number
+  @IsString()
+  readonly day: string
 }

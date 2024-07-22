@@ -2,7 +2,7 @@ type CreateMatchType = {
     id: string
     local: string
     visitor: string
-    day: number
+    day: string
 }
 
 export class CreateMatch implements CreateMatchType {
