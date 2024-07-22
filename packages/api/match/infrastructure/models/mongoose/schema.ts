@@ -12,7 +12,7 @@ export class MatchSchema {
   readonly visitor: string
 
   @Prop()
-  readonly day: number
+  readonly day: Date
 
   constructor(
     _id: MatchSchema['_id'],
@@ -27,6 +27,6 @@ export class MatchSchema {
   }
 
   static fromMatch({ id, local, visitor, day }: Match) {
-    return new this(id.value, local.value, visitor.value, day.value)
+    return new this(id.value, local.value, visitor.value, day)
   }
 }

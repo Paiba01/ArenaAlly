@@ -8,11 +8,13 @@ import { UsersController } from './controllers/users'
 import { UserSchema } from './models/mongoose/schema'
 import { userProviders } from './providers'
 import { GetUsersHandler } from '../application/queries/handlers/get-users'
+import { EditUserHandler } from '../application/commands/handlers/edit-user'
 
 const controllers = [UsersController]
 
 const commandHandlers = [
   CreateUserHandler,
+  EditUserHandler,
 ]
 
 const queryHandlers = [GetUserHandler, GetUsersHandler]

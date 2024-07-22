@@ -2,7 +2,7 @@ import { AggregateRoot } from "@nestjs/cqrs";
 import { MatchId } from "./id";
 import { Team } from "./team";
 import Referee from "./referee";
-import { Day } from "./day";
+
 
 
 class Match extends AggregateRoot {
@@ -11,7 +11,7 @@ class Match extends AggregateRoot {
     private _visitor:   Team
     private _referee1:  Referee | null
     private _referee2:  Referee | null
-    private _day:       Day
+    private _day:       Date
 
     private constructor(
         id:         MatchId,
@@ -19,7 +19,7 @@ class Match extends AggregateRoot {
         visitor:    Team,
         referee1:   Referee | null,
         referee2:   Referee | null,
-        day:        Day,
+        day:        Date,
     ) {
         super()
         this._id            = id
@@ -35,17 +35,13 @@ class Match extends AggregateRoot {
         local,
         visitor,
         day,
-        referee1 = null, 
-        referee2 = null,
     }:{
         id:         MatchId
         local:      Team
         visitor:    Team
-        day:        Day
-        referee1?:  Referee | null
-        referee2?:  Referee | null
+        day:        Date
     }) {
-        return new this(id,local,visitor, referee1, referee2, day)
+        return new this(id,local,visitor, null, null, day)
     }
 
     get id(): MatchId {
@@ -68,7 +64,7 @@ class Match extends AggregateRoot {
         return this._referee2 || new NullReferee()
     }
 
-    get day(): Day {
+    get day(): Date {
         return this._day
     }
 }

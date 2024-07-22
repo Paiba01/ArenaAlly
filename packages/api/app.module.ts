@@ -7,6 +7,7 @@ import LoggerMiddleware from '~/middleware/logger'
 
 import ScopeModule from './scope/infrastructure/module'
 import { UserModule } from './user/infrastructure/module'
+import { MatchModule } from './match/infrastructure/module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/infrastructure/module'
     MongooseModule.forRoot(process.env.MONGODB_URI || '', {}),
     ScopeModule,
     UserModule,
+    MatchModule,
   ],
 })
 export class AppModule implements NestModule {
