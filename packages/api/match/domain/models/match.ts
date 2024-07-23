@@ -27,7 +27,7 @@ class Match extends AggregateRoot {
         this._visitor       = visitor
         this._referee1      = referee1 || null
         this._referee2      = referee2 || null
-        this._day           = day
+        this._day           = day 
     }
 
     static create({
@@ -39,7 +39,7 @@ class Match extends AggregateRoot {
         id:         MatchId
         local:      Team
         visitor:    Team
-        day:        Date
+        day: Date
     }) {
         return new this(id,local,visitor, null, null, day)
     }
