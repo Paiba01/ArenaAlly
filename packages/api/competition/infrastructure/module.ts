@@ -6,6 +6,8 @@ import { CompetitionsController } from './controllers/competitions'
 import { CreateCompetitionHandler } from '../application/commands/handlers/create-competition'
 import { CompetitionSchema } from './models/mongoose/schema'
 import { MatchSchema } from '~/match/infrastructure/models/mongoose/schema'
+import { GetCompetitionHandler } from '../application/queries/handlers/get-competition'
+import { GetCompetitionsHandler } from '../application/queries/handlers/get-competitions'
 
 
 const controllers = [CompetitionsController]
@@ -14,6 +16,8 @@ const commandHandlers = [
   CreateCompetitionHandler,
 
 ]
+
+const queryHandlers = [GetCompetitionHandler, GetCompetitionsHandler]
 
 @Module({
   controllers,
@@ -31,7 +35,7 @@ const commandHandlers = [
     ]),
     
   ],
-  providers: [...commandHandlers, ...competitionProviders],
+  providers: [...commandHandlers, ...queryHandlers, ...competitionProviders],
 })
 
 export class CompetitionModule {

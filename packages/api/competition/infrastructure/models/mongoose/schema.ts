@@ -14,10 +14,10 @@ export class CompetitionSchema {
   readonly category: string
 
   @Prop()
-  readonly dateFrom: string
+  readonly dateFrom: Date
   
   @Prop()
-  readonly dateTo: string
+  readonly dateTo: Date
 
   @Prop()
   readonly matchs: string[]
@@ -40,6 +40,6 @@ export class CompetitionSchema {
   }
 
   static fromCompetition({ id, name, category, dateFrom, dateTo, matchs }: Competition) {
-    return new this(id.value, name.value, category.value, dateFrom.toISOString(), dateTo.toISOString(), matchs.map((match)=> match.value))
+    return new this(id.value, name.value, category.value, dateFrom, dateTo, matchs.map((match)=> match.value))
   }
 }
