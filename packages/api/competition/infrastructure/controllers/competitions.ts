@@ -24,6 +24,8 @@ import { CompetitionDto } from '~/competition/dto/response/competition'
 import { GetCompetitions } from '~/competition/application/queries/get-competitions'
 import { GetCompetition } from '~/competition/application/queries/get-competition'
 import { GetCompetitionHandler } from '~/competition/application/queries/handlers/get-competition'
+import { DeleteCompetitionHandler } from '~/competition/application/commands/handlers/delete-competition'
+import { DeleteCompetition } from '~/competition/application/commands/delete-competition'
   
   @ApiTags('Competitions')
   @Controller('competitions')
@@ -84,7 +86,21 @@ import { GetCompetitionHandler } from '~/competition/application/queries/handler
 
     if (response.isErr())
       throw new BadRequestException(HttpError.fromException(response.error))
-  } 
+  }
+
+  @ApiOperation({ summary: 'Deletes a Competition' })
+  @ApiOkResponse({
+    description: 'Competition deleted',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @Delete(':id')
+  async deleteCompetition(@Param('id') id: string) {
+    const response: Awaited<ReturnType<DeleteCompetitionHandler['execute']>> =
+      await this.commandBus.execute(DeleteCompetition.with({ id }))
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+  }
 
 }
   

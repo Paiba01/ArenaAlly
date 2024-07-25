@@ -8,13 +8,14 @@ import { CompetitionSchema } from './models/mongoose/schema'
 import { MatchSchema } from '~/match/infrastructure/models/mongoose/schema'
 import { GetCompetitionHandler } from '../application/queries/handlers/get-competition'
 import { GetCompetitionsHandler } from '../application/queries/handlers/get-competitions'
+import { DeleteCompetitionHandler } from '../application/commands/handlers/delete-competition'
 
 
 const controllers = [CompetitionsController]
 
 const commandHandlers = [
-  CreateCompetitionHandler,
-
+    CreateCompetitionHandler,
+    DeleteCompetitionHandler,
 ]
 
 const queryHandlers = [GetCompetitionHandler, GetCompetitionsHandler]

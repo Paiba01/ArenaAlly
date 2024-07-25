@@ -4,10 +4,10 @@ import { err, ok, Result } from 'neverthrow'
 import { MatchId } from '~/match/domain/models/id'
 import Matchs from '~/match/domain/services/matchs'
 
-import NotFoundScope from '~/scope/domain/exceptions/not-found'
 import { InvalidId } from '~/shared/domain'
 import { DeleteMatch } from '../delete-match'
 import MatchsFinder from '../../services/finder'
+import { NotFoundMatch } from '~/match/domain/exceptions/not-found'
 
 
 
@@ -20,7 +20,7 @@ export class DeleteMatchHandler implements ICommandHandler {
 
   async execute(
     command: DeleteMatch,
-  ): Promise<Result<void, InvalidId | NotFoundScope>> {
+  ): Promise<Result<void, InvalidId | NotFoundMatch>> {
     const matchId = MatchId.fromString(command.id)
     if (matchId.isErr()) return err(matchId.error)
 
