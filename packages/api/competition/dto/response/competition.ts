@@ -15,10 +15,6 @@ export class CompetitionDto {
   readonly category: string
 
   @ApiProperty()
-  @IsArray()
-  readonly matchs: string
-
-  @ApiProperty()
   @IsString()
   readonly dateFrom: string
 

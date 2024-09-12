@@ -8,6 +8,10 @@ export class MatchDto {
 
   @ApiProperty()
   @IsString()
+  readonly competitionId: string
+
+  @ApiProperty()
+  @IsString()
   readonly local: string
 
   @ApiProperty()

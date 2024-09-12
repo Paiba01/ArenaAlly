@@ -41,7 +41,7 @@ import { DeleteCompetition } from '~/competition/application/commands/delete-com
     type: [CompetitionDto],
   })
   @Get()
-  async getMatchs(): Promise<CompetitionDto[]> {
+  async getCompetitions(): Promise<CompetitionDto[]> {
     return await this.queryBus.execute(GetCompetitions.all())
   }
 
@@ -51,7 +51,7 @@ import { DeleteCompetition } from '~/competition/application/commands/delete-com
     type: CompetitionDto,
   })
   @Get(':id')
-  async getMatch(@Param('id') id: string): Promise<CompetitionDto> {
+  async getCompetition(@Param('id') id: string): Promise<CompetitionDto> {
     const response: Awaited<ReturnType<GetCompetitionHandler['execute']>> =
       await this.queryBus.execute(
         GetCompetition.with({

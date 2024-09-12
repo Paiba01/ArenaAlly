@@ -33,8 +33,6 @@ export class CreateCompetitionHandler implements ICommandHandler {
         const category = Category.fromString(command.category)
         if (category.isErr()) return err(category.error)
         
-        const matchsIds: MatchId[] = [];
-        
         for (let i = 0; i < command.teams.length; i++) {
             for (let j = i + 1; j < command.teams.length; j++) {
                 const id = Uuid.generate()
@@ -49,14 +47,13 @@ export class CreateCompetitionHandler implements ICommandHandler {
 
                 const match = Match.create({
                     id: matchId.value,
+                    competitionId: competitionId.value,
                     local: local.value,
                     visitor:visitor.value,
                     day: new Date()
                 })
 
                 await this.matchs.create(match)
-
-                matchsIds.push(matchId.value)
             }
         }
         
@@ -67,7 +64,6 @@ export class CreateCompetitionHandler implements ICommandHandler {
             category: category.value,
             dateFrom: new Date(command.dateFrom),
             dateTo: new Date(command.dateTo),
-            matchs: matchsIds
         })
         
         return ok(await this.competitions.create(competition))
