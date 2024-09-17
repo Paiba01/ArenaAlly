@@ -1,7 +1,7 @@
-import { useTranslation } from "react-i18next"
+import { useGetCompetitions } from '~/hooks/competitions/useGetCompetitions'
 
 export const Competitions = () => {
-    const { t } = useTranslation('competitions')
-  
-    return <>Competition</>
-  }
+  const { data } = useGetCompetitions()
+
+  return <>{data}</>
+}
