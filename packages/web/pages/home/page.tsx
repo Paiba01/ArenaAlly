@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Item } from '../admin/Item'
 import styled from 'styled-components'
+import { ROUTES } from '~/services/routing/Routes/constants'
 
 const Container = styled.div`
   display: grid;
@@ -19,12 +20,20 @@ export const Home = () => {
         color="red"
         label={t('ITEMS.COMPETITION')}
         image="/images/competitions2.png"
-      />
-      <Item color="orange" label={t('ITEMS.DESIGNATIONS')} image="/images/designations.png" />
+        to={ROUTES.COMPETITIONS}
+        />
+      <Item
+        color="orange"
+        label={t('ITEMS.DESIGNATIONS')}
+        image="/images/designations.png"
+        to={ROUTES.MY_DESIGNATIONS}
+
+        />
       <Item
         color="blue"
         label={t('ITEMS.DOCUMENTS')}
         image="/images/documents.png"
+        to={ROUTES.DOCUMENTS}
       />
     </Container>
   )

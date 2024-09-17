@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { ROUTES } from '~/services/routing/Routes/constants'
 
-const Container = styled.button<{ $color: string; $image: string }>`
+const Container = styled(Link)<{ $color: string; $image: string }>`
   background-image: url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -51,13 +53,15 @@ export const Item = ({
   color,
   label,
   image,
+  to,
 }: {
   color: string
   label: string
   image: string
+  to: string
 }) => {
   return (
-    <Container $color={color} $image={image}>
+    <Container $color={color} $image={image} to={to}>
       <Title>{label}</Title>
     </Container>
   )
