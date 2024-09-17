@@ -1,8 +1,5 @@
 const withHeadersFetch = (input: RequestInfo | URL, init?: RequestInit) => {
-
-  console.log(`${process.env.VITE_API_URL}/${input}`);
-  
-  return fetch(`${process.env.VITE_API_URL}/${input}`, {
+  return fetch(`${import.meta.env.VITE_API_URL}/${input}`, {
     ...init,
     headers: {
       Accept: 'application/json',
