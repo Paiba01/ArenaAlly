@@ -32,6 +32,12 @@ export class MatchSchema {
   }
 
   static fromMatch({ id, competitionId, local, visitor, day }: Match) {
-    return new this(id.value,competitionId.value, local.value, visitor.value, day)
+    return new this(
+      id.value,
+      competitionId.value,
+      local.value,
+      visitor.value,
+      day,
+    )
   }
 }

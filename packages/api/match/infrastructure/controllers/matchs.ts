@@ -5,7 +5,8 @@ import {
     Delete,
     Get,
     Param,
-    Post
+    Post,
+    Put
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
@@ -22,6 +23,9 @@ import { MatchDto } from '~/match/dto/response/match'
 import { GetMatchs } from '~/match/application/queries/get-matchs'
 import { GetMatch } from '~/match/application/queries/get-match'
 import { GetMatchHandler } from '~/match/application/queries/handlers/get-match'
+import { EditMatchDto } from '~/match/dto/request/edit-match'
+import { EditMatchHandler } from '~/match/application/commands/handlers/edit-match'
+import { EditMatch } from '~/match/application/commands/edit-match'
   
   @ApiTags('Matchs')
   @Controller('matchs')
@@ -60,6 +64,33 @@ import { GetMatchHandler } from '~/match/application/queries/handlers/get-match'
 
     return response.value
   }
+
+  @ApiOperation({ summary: 'Edits a match' })
+  @ApiOkResponse({
+    description: 'Match edited',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @Put(':id')
+  async editMatch(@Body() dto: EditMatchDto, @Param('id') id: string) {
+    const updateData: any = { id };
+    updateData.id=id;
+    if (dto.competitionId !== undefined) updateData.competitionId = dto.competitionId;
+    if (dto.local !== undefined) updateData.local = dto.local;
+    if (dto.visitor !== undefined) updateData.visitor = dto.visitor;
+    if (dto.day !== undefined) updateData.day = dto.day;
+    if (dto.referee1 !== undefined) updateData.referee1 = dto.referee1;
+    if (dto.referee2 !== undefined) updateData.referee2 = dto.referee2;
+
+    const response = await this.commandBus.execute(
+      EditMatch.with(updateData)
+    );
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+    
+    return { message: 'Match edited successfully' };
+  }
+
 
   @ApiOperation({ summary: 'Deletes a Match' })
   @ApiOkResponse({

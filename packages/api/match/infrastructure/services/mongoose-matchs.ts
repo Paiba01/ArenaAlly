@@ -19,4 +19,13 @@ export class MongooseMatchs implements Matchs {
     await this.matchs.deleteOne({ _id: id.value }).lean().exec()
   }
 
+  async edit(match: Match): Promise<void> {
+    await this.matchs
+      .updateOne(
+        { _id: match.id.value },
+        { local: match.local.value, visitor: match.visitor.value, referee1: match.referee1, referee2: match.referee2, day: match.day },
+      )
+      .lean()
+      .exec()
+  }
 }
