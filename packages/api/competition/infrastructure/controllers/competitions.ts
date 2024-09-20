@@ -5,7 +5,8 @@ import {
     Delete,
     Get,
     Param,
-    Post
+    Post,
+    Put
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
@@ -26,6 +27,9 @@ import { GetCompetition } from '~/competition/application/queries/get-competitio
 import { GetCompetitionHandler } from '~/competition/application/queries/handlers/get-competition'
 import { DeleteCompetitionHandler } from '~/competition/application/commands/handlers/delete-competition'
 import { DeleteCompetition } from '~/competition/application/commands/delete-competition'
+import { EditCompetitionHandler } from '~/competition/application/commands/handlers/edit-competition'
+import { EditCompetition } from '~/competition/application/commands/edit-competition'
+import { EditCompetitionDto } from '~/competition/dto/request/edit-competition'
   
   @ApiTags('Competitions')
   @Controller('competitions')
@@ -102,5 +106,26 @@ import { DeleteCompetition } from '~/competition/application/commands/delete-com
       throw new BadRequestException(HttpError.fromException(response.error))
   }
 
+  @ApiOperation({ summary: 'Edits a competition' })
+  @ApiOkResponse({
+    description: 'Competition edited',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @Put(':id')
+  async editUser(@Body() dto: EditCompetitionDto, @Param('id') id: string) {
+    const response: Awaited<ReturnType<EditCompetitionHandler['execute']>> =
+      await this.commandBus.execute(
+        EditCompetition.with({
+          id,
+          name: dto.name,
+          category: dto.category,
+          dateFrom: dto.dateFrom,
+          dateTo: dto.dateTo
+        }),
+      )
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+  }
 }
   
