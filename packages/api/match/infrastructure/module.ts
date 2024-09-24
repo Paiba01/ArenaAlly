@@ -7,14 +7,15 @@ import { matchProviders } from './providers'
 import { DeleteMatchHandler } from '../application/commands/handlers/delete-match'
 import { GetMatchHandler } from '../application/queries/handlers/get-match'
 import { GetMatchsHandler } from '../application/queries/handlers/get-matchs'
-import { EditMatchHandler } from '../application/commands/handlers/edit-match'
+import { EditMatchDateHandler } from '../application/commands/handlers/edit-match-date'
+
 
 
 const controllers = [MatchsController]
 
 const commandHandlers = [
   DeleteMatchHandler,
-  EditMatchHandler,
+  EditMatchDateHandler,
 ]
 
 const queryHandlers = [GetMatchHandler, GetMatchsHandler]

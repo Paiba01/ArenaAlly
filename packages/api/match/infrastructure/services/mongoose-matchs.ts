@@ -4,12 +4,22 @@ import { MatchSchema } from '../models/mongoose/schema'
 import Matchs from '~/match/domain/services/matchs'
 import Match from '~/match/domain/models/match'
 import { MatchId } from '~/match/domain/models/id'
+import { err, ok, Result } from 'neverthrow'
+import { NotFoundMatch } from '~/match/domain/exceptions/not-found'
 
 export class MongooseMatchs implements Matchs {
   constructor(
     @InjectModel(MatchSchema.name)
     private readonly matchs: Model<MatchSchema>,
   ) {}
+
+  async find(id: MatchId): Promise<Result<void, NotFoundMatch>> {
+    const match = await this.matchs.findById(id.value).exec()
+
+    if (!match) return err(NotFoundMatch.withId(id.value))
+
+    return ok(undefined)
+  }
 
   async create(match: Match): Promise<void> {
     await this.matchs.create(MatchSchema.fromMatch(match))
@@ -19,12 +29,9 @@ export class MongooseMatchs implements Matchs {
     await this.matchs.deleteOne({ _id: id.value }).lean().exec()
   }
 
-  async edit(match: Match): Promise<void> {
+  async editDate(matchId: MatchId, matchDay: Date): Promise<void> {
     await this.matchs
-      .updateOne(
-        { _id: match.id.value },
-        { local: match.local.value, visitor: match.visitor.value, referee1: match.referee1, referee2: match.referee2, day: match.day },
-      )
+      .updateOne({ _id: matchId.value }, { day: matchDay })
       .lean()
       .exec()
   }
