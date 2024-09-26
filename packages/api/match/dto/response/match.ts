@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNumber, IsString } from 'class-validator'
+import { IsString } from 'class-validator'
 
 export class MatchDto {
   @ApiProperty()
@@ -17,6 +17,14 @@ export class MatchDto {
   @ApiProperty()
   @IsString()
   readonly visitor: string
+
+  @ApiProperty()
+  @IsString()
+  readonly referee1?: string
+
+  @ApiProperty()
+  @IsString()
+  readonly referee2?: string
 
   @ApiProperty()
   @IsString()

@@ -8,6 +8,8 @@ import { DeleteMatchHandler } from '../application/commands/handlers/delete-matc
 import { GetMatchHandler } from '../application/queries/handlers/get-match'
 import { GetMatchsHandler } from '../application/queries/handlers/get-matchs'
 import { EditMatchDateHandler } from '../application/commands/handlers/edit-match-date'
+import { DesignateRefereesHandler } from '../application/commands/handlers/designate-referees'
+import { UserSchema } from '~/user/infrastructure/models/mongoose/schema'
 
 
 
@@ -16,6 +18,7 @@ const controllers = [MatchsController]
 const commandHandlers = [
   DeleteMatchHandler,
   EditMatchDateHandler,
+  DesignateRefereesHandler,
 ]
 
 const queryHandlers = [GetMatchHandler, GetMatchsHandler]
@@ -28,6 +31,10 @@ const queryHandlers = [GetMatchHandler, GetMatchsHandler]
       {
         name: MatchSchema.name,
         schema: SchemaFactory.createForClass(MatchSchema),
+      },
+      {
+        name: UserSchema.name,
+        schema: SchemaFactory.createForClass(UserSchema),
       },
     ]),
   ],
