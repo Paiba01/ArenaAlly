@@ -7,6 +7,7 @@ import { MatchId } from '~/match/domain/models/id'
 import { err, ok, Result } from 'neverthrow'
 import { NotFoundMatch } from '~/match/domain/exceptions/not-found'
 import Referee from '~/match/domain/models/referee'
+import UserId from '~/user/domain/models/id'
 
 export class MongooseMatchs implements Matchs {
   constructor(
@@ -37,9 +38,9 @@ export class MongooseMatchs implements Matchs {
       .exec()
   }
 
-  async designateReferees(matchId: MatchId, refereeId1: Referee, refereeId2:Referee): Promise<void> {
+  async designateReferees(matchId: MatchId, refereeId1: UserId, refereeId2:UserId): Promise<void> {
     await this.matchs
-      .updateOne({ _id: matchId.value }, { referee1: refereeId1 }, { referee2: refereeId2 })
+      .updateOne({ _id: matchId.value }, { referee1: refereeId1.value, referee2: refereeId2.value })
       .lean()
       .exec()
   }
