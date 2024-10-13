@@ -29,6 +29,8 @@ import { DesignateReferees } from '~/match/application/commands/designate-refere
 import { DesignateRefereesHandler } from '~/match/application/commands/handlers/designate-referees'
 import { GetMatchsByCompetition } from '~/match/application/queries/get-matchs-by-competition'
 import { GetMatchsByCompetitionHandler } from '~/match/application/queries/handlers/get-matchs-by-competition'
+import { GetMatchsOfUser } from '~/match/application/queries/get-matchs-of-user'
+import { GetMatchsOfUserHandler } from '~/match/application/queries/handlers/get-matchs-of-user'
 
 @ApiTags('Matchs')
 @Controller('matchs')
@@ -80,6 +82,27 @@ export class MatchsController {
       await this.queryBus.execute(
         GetMatch.with({
           id,
+        }),
+      )
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+
+    return response.value
+  }
+
+  @ApiOperation({ summary: 'Get Matches by user ID' })
+  @ApiOkResponse({
+    description: 'Matches for the specified user',
+    type: [MatchDto],
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input or not found' })
+  @Get('users/:userId')
+  async getMatchsOfUser(@Param('userId') userId: string): Promise<MatchDto[]> {
+    const response: Awaited<ReturnType<GetMatchsOfUserHandler['execute']>> =
+      await this.queryBus.execute(
+        GetMatchsOfUser.with({
+          userId,
         }),
       )
 

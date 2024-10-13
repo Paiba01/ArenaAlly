@@ -9,6 +9,7 @@ import { MatchId } from '~/match/domain/models/id'
 import { MatchDto } from '~/match/dto/response/match'
 import { NotFoundMatch } from '~/match/domain/exceptions/not-found'
 import { CompetitionId } from '~/competition/domain/models/id'
+import UserId from '~/user/domain/models/id'
 
 @Injectable()
 export class MongooseMatchsFinder implements MatchsFinder {
@@ -43,10 +44,33 @@ export class MongooseMatchsFinder implements MatchsFinder {
   async findByCompetitionId(
     competitionId: CompetitionId,
   ): Promise<Result<MatchDto[], NotFoundMatch>> {
-    const matches = await this.matchs.find({ competitionId: competitionId.value }).exec()
+    const matches = await this.matchs
+      .find({ competitionId: competitionId.value })
+      .exec()
 
     if (matches.length === 0) {
       return err(NotFoundMatch.withCompetitionId(competitionId.value))
+    }
+
+    const matchDtos: MatchDto[] = matches.map((match) => ({
+      ...match.toObject(),
+      day: match.day instanceof Date ? match.day.toISOString() : match.day,
+    }))
+
+    return ok(matchDtos)
+  }
+
+  async findByUserId(
+    userId: UserId,
+  ): Promise<Result<MatchDto[], NotFoundMatch>> {
+    const matches = await this.matchs
+      .find({
+        $or: [{ referee1: userId.value }, { referee2: userId.value }],
+      })
+      .exec()
+
+    if (matches.length === 0) {
+      return err(NotFoundMatch.withUserId(userId.value))
     }
 
     const matchDtos: MatchDto[] = matches.map((match) => ({

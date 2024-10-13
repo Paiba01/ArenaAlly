@@ -7,4 +7,7 @@ export class NotFoundMatch extends Exception {
   static withCompetitionId(id: string): NotFoundMatch {
     return Exception.with(`Match with competitionId ${id} cannot be found`)
   }
+  static withUserId(id: string): NotFoundMatch {
+    return Exception.with(`Match with competitionId ${id} cannot be found`)
+  }
 }
