@@ -3,6 +3,7 @@ import { Competition } from '~/models/competition'
 import EditIcon from 'shared/assets/icons/edit.svg?react'
 import DeleteIcon from 'shared/assets/icons/delete.svg?react'
 import { Match } from '~/models/match'
+import { useGetUser } from '~/hooks/users/useGetUser'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const CenteredContainer = styled.div`
   width: 100%;
 `
 
-const CompetitionCard = styled.div`
+const MatchCard = styled.div`
   background-color: #edf5e9;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -20,7 +21,7 @@ const CompetitionCard = styled.div`
   width: 70%;
 `
 
-const Name = styled.div`
+const Teams = styled.div`
   font-size: 22px;
   font-weight: bold;
   text-transform: uppercase;
@@ -42,12 +43,20 @@ const RightColumn = styled.div`
   justify-content: flex-end;
   align-items: center;
 `
-
-const Atributes = styled.span`
-  font-size: 16px;
+const AtributesDate = styled.span`
   margin-right: 4em;
+  margin-top: 2em !important;
+  margin-bottom: 1em; 
+  font-size: 19px;
+  display: block;
 `
 
+const Atributes = styled.span`
+  margin-right: 4em;
+  margin-bottom: 1em;
+  font-size: 18px;
+  
+`
 const ActionButton = styled.button<{
   backgroundColor: string
   hoverColor: string
@@ -74,7 +83,14 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const CompetitionTable = ({ match }: { match: Match }) => {
+export const MatchTable = ({ match }: { match: Match }) => {
+  const { data: referee1Data, isLoading: isLoadingReferee1 } = useGetUser(
+    match?.referee1 ?? '',
+  )
+  const { data: referee2Data, isLoading: isLoadingReferee2 } = useGetUser(
+    match?.referee2 ?? '',
+  )
+
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
@@ -86,20 +102,17 @@ export const CompetitionTable = ({ match }: { match: Match }) => {
 
   return (
     <CenteredContainer>
-      <CompetitionCard>
+      <MatchCard>
         <Elements>
           <LeftColumn>
-            <Name>{match.name}</Name>
+            <Teams>
+              {match.local} - {match.visitor}{' '}
+            </Teams>
+            <AtributesDate>Fecha: {formatDate(match.day)}</AtributesDate>
             <p>
-              <Atributes>
-                Categoría: <b>{match.category}</b>
-              </Atributes>
+              <Atributes>Arbitro: {referee1Data?.name}</Atributes>
               <Atributes>||</Atributes>
-              <Atributes>
-                Fecha de inicio: {formatDate(match.dateFrom)}
-              </Atributes>
-              <Atributes>||</Atributes>
-              <Atributes>Fecha de fin: {formatDate(match.dateTo)}</Atributes>
+              <Atributes>Arbitro: {referee2Data?.name}</Atributes>
             </p>
           </LeftColumn>
           <RightColumn>
@@ -111,7 +124,7 @@ export const CompetitionTable = ({ match }: { match: Match }) => {
             </ActionButton>
           </RightColumn>
         </Elements>
-      </CompetitionCard>
+      </MatchCard>
     </CenteredContainer>
   )
 }

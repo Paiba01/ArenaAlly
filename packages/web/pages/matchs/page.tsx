@@ -1,6 +1,8 @@
 import styled from 'styled-components'
-import { CompetitionTable } from './Item'
-import { useGetMatchsById } from '~/hooks/matchs/useGetMatchsById'
+
+import { useGetMatchsByCompetitionId } from '~/hooks/matchs/useGetMatchsById'
+import { MatchTable } from './Item'
+
 
 const PageContainer = styled.div`
   display: flex;
@@ -9,8 +11,10 @@ const PageContainer = styled.div`
   width: 100%;
   margin-top: 2em;
 `
+const competitionId = '61c69dd6-ad52-446a-8b98-4038153ea401'
+
 export const Matchs = () => {
-  const { data, isLoading } = useGetMatchsById()
+  const { data, isLoading } = useGetMatchsByCompetitionId(competitionId)
   const isAdmin = !data
 
   if (isLoading) return <>Cargando...</>
@@ -19,8 +23,8 @@ export const Matchs = () => {
     <div className="container mx-auto px-4 py-8">
       <PageContainer>
         {data &&
-          data.map((competition) => (
-            <CompetitionTable key={competition._id} competition={competition} />
+          data.map((match) => (
+            <MatchTable key={match._id} match={match} />
           ))}
       </PageContainer>
     </div>
