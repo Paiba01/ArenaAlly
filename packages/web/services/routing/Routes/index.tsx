@@ -9,6 +9,7 @@ import { Referees } from '~/pages/referees/page'
 import { Designate } from '~/pages/designate/page'
 import { My_designations } from '~/pages/my_designations/page'
 import { Documents } from '~/pages/documents/page'
+import { Matchs } from '~/pages/matchs/page'
 
 const AppRoutes = () => (
   <Suspense fallback={<>Loading...</>}>
@@ -20,6 +21,7 @@ const AppRoutes = () => (
       <Route path={ROUTES.DESIGNATE} element={<Designate />} />
       <Route path={ROUTES.MY_DESIGNATIONS} element={<My_designations />} />
       <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
+      <Route path={ROUTES.MATCHS} element={<Matchs />} />
       <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
     </Routes>
   </Suspense>

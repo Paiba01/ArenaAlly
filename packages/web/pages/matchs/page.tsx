@@ -1,6 +1,6 @@
-import { useGetCompetitions } from '~/hooks/competitions/useGetCompetitions'
 import styled from 'styled-components'
 import { CompetitionTable } from './Item'
+import { useGetMatchsById } from '~/hooks/matchs/useGetMatchsById'
 
 const PageContainer = styled.div`
   display: flex;
@@ -9,11 +9,11 @@ const PageContainer = styled.div`
   width: 100%;
   margin-top: 2em;
 `
-export const Competitions = () => {
-  const { data, isLoading } = useGetCompetitions()
+export const Matchs = () => {
+  const { data, isLoading } = useGetMatchsById()
   const isAdmin = !data
 
-  if (isLoading ) return <>Cargando...</>
+  if (isLoading) return <>Cargando...</>
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -26,5 +26,3 @@ export const Competitions = () => {
     </div>
   )
 }
-
-
