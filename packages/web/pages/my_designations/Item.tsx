@@ -115,14 +115,7 @@ export const MatchTable = ({ match }: { match: Match }) => {
               <Atributes>Arbitro: {referee2Data?.name}</Atributes>
             </p>
           </LeftColumn>
-          <RightColumn>
-            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
-              <StyledIcon as={EditIcon} />
-            </ActionButton>
-            <ActionButton backgroundColor="#e30000" hoverColor="#c30101">
-              <StyledIcon as={DeleteIcon} />
-            </ActionButton>
-          </RightColumn>
+          <RightColumn/>
         </Elements>
       </MatchCard>
     </CenteredContainer>
