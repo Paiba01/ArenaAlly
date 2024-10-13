@@ -4,6 +4,7 @@ type EditUserType = Readonly<{
     email: string
     password: string
     isActive: boolean
+    isAdmin: boolean
 }>
 export class EditUser implements EditUserType {
     private constructor(
@@ -12,9 +13,10 @@ export class EditUser implements EditUserType {
         readonly email: EditUserType['email'],
         readonly password: EditUserType['password'],
         readonly isActive: EditUserType['isActive'],
+        readonly isAdmin: EditUserType['isAdmin'],
     ) {}
 
-    static with({ id, name, email, password, isActive }: EditUserType): EditUser {
-        return new this(id, name, email, password, isActive)
+    static with({ id, name, email, password, isActive, isAdmin}: EditUserType): EditUser {
+        return new this(id, name, email, password, isActive, isAdmin)
     }
 }

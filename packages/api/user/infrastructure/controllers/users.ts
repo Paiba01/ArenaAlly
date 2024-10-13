@@ -102,6 +102,7 @@ import { EditUser } from '~/user/application/commands/edit-user'
           email: dto.email,
           password: dto.password,
           isActive: dto.isActive,
+          isAdmin: dto.isAdmin,
         }),
       )
 

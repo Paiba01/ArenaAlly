@@ -17,4 +17,8 @@ export class EditUserDto {
     @ApiProperty()
     @IsBoolean()
     readonly isActive: boolean
+
+    @ApiProperty()
+    @IsBoolean()
+    readonly isAdmin: boolean
 }

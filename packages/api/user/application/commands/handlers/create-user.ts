@@ -37,7 +37,8 @@ export class CreateUserHandler implements ICommandHandler {
             name: userName.value,
             email: userEmail.value,
             password: userPassword.value,
-            isActive: false
+            isActive: false,
+            isAdmin: false
         })
 
         return ok(await this.users.create(user))
