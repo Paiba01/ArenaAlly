@@ -3,15 +3,15 @@ import { Match } from '~/models/match'
 
 import client from '~/services/http/client'
 
-export const useGetMatchsByCompetitionId = (competitionId: string) => {
+export const useGetMatchsOfUser = (userId: string) => {
   return useQuery<Match[]>({
     queryFn: async () => {
-      const response = await client.get(`matchs/competition/${competitionId}`)
+      const response = await client.get(`matchs/users/${userId}`)
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
       return response.json()
     },
-    queryKey: ['matchs', 'competition', competitionId],
+    queryKey: ['matchs', 'users', userId],
   })
 }
