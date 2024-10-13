@@ -8,7 +8,7 @@ import { MatchSchema } from '../models/mongoose/schema'
 import { MatchId } from '~/match/domain/models/id'
 import { MatchDto } from '~/match/dto/response/match'
 import { NotFoundMatch } from '~/match/domain/exceptions/not-found'
-
+import { CompetitionId } from '~/competition/domain/models/id'
 
 @Injectable()
 export class MongooseMatchsFinder implements MatchsFinder {
@@ -22,24 +22,38 @@ export class MongooseMatchsFinder implements MatchsFinder {
 
     if (!match) return err(NotFoundMatch.withId(id.value))
 
-      const matchDto: MatchDto = {
-        ...match.toObject(),
-        day: match.day instanceof Date ? match.day.toISOString() : match.day,
-      }
-  
+    const matchDto: MatchDto = {
+      ...match.toObject(),
+      day: match.day instanceof Date ? match.day.toISOString() : match.day,
+    }
+
     return ok(matchDto)
   }
 
   async getAll(): Promise<MatchDto[]> {
     const matches = await this.matchs.find().exec()
-    
+
     // Convertir cada documento a MatchDto
-    return matches.map(match => ({
+    return matches.map((match) => ({
       ...match.toObject(),
       day: match.day instanceof Date ? match.day.toISOString() : match.day,
-      
     }))
   }
+
+  async findByCompetitionId(
+    competitionId: CompetitionId,
+  ): Promise<Result<MatchDto[], NotFoundMatch>> {
+    const matches = await this.matchs.find({ competitionId: competitionId.value }).exec()
+
+    if (matches.length === 0) {
+      return err(NotFoundMatch.withCompetitionId(competitionId.value))
+    }
+
+    const matchDtos: MatchDto[] = matches.map((match) => ({
+      ...match.toObject(),
+      day: match.day instanceof Date ? match.day.toISOString() : match.day,
+    }))
+
+    return ok(matchDtos)
+  }
 }
-
-

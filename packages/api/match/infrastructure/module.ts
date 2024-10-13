@@ -10,6 +10,7 @@ import { GetMatchsHandler } from '../application/queries/handlers/get-matchs'
 import { EditMatchDateHandler } from '../application/commands/handlers/edit-match-date'
 import { DesignateRefereesHandler } from '../application/commands/handlers/designate-referees'
 import { UserSchema } from '~/user/infrastructure/models/mongoose/schema'
+import { GetMatchsByCompetitionHandler } from '../application/queries/handlers/get-matchs-by-competition'
 
 
 
@@ -21,7 +22,7 @@ const commandHandlers = [
   DesignateRefereesHandler,
 ]
 
-const queryHandlers = [GetMatchHandler, GetMatchsHandler]
+const queryHandlers = [GetMatchHandler, GetMatchsHandler, GetMatchsByCompetitionHandler]
 
 @Module({
   controllers,
