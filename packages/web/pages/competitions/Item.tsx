@@ -1,7 +1,11 @@
-import styled from "styled-components";
-import { Competition } from "~/models/competition"
+import styled from 'styled-components'
+import { Competition } from '~/models/competition'
 import EditIcon from 'shared/assets/icons/edit.svg?react'
 import DeleteIcon from 'shared/assets/icons/delete.svg?react'
+import { useDeleteCompetition } from '~/hooks/competitions/useDeleteCompetition'
+import { useState } from 'react'
+import ConfirmationModal from './confirmationModal'
+import Toast from './toast'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -29,25 +33,28 @@ const Name = styled.div`
 const Elements = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const LeftColumn = styled.div`
   width: 75%;
-`;
+`
 
 const RightColumn = styled.div`
   width: 25%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-`;
+`
 
 const Atributes = styled.span`
   font-size: 16px;
   margin-right: 4em;
 `
 
-const ActionButton = styled.button<{ backgroundColor: string, hoverColor: string }>`
+const ActionButton = styled.button<{
+  backgroundColor: string
+  hoverColor: string
+}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,54 +65,96 @@ const ActionButton = styled.button<{ backgroundColor: string, hoverColor: string
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   cursor: pointer;
-  
+
   &:hover {
     background-color: ${(props) => props.hoverColor};
   }
-`;
+`
 
 const StyledIcon = styled.svg`
   width: 20px;
   height: 20px;
   fill: white;
-`;
+`
 
-export const CompetitionTable = ({ competition }: { competition: Competition }) => {
-    const formatDate = (dateString: string) => {
-      const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }
-      return new Date(dateString).toLocaleDateString('es-ES', options)
+export const CompetitionTable = ({competition,}: {competition: Competition}) => {
+  const deleteCompetition = useDeleteCompetition()
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     }
-  
-    return (
-      <CenteredContainer>
-        <CompetitionCard>
-          <Elements>
-              <LeftColumn>
-                  <Name>{competition.name}</Name>
-                  <p>
-                      <Atributes>Categoría: <b>{competition.category}</b></Atributes>
-                      <Atributes>||</Atributes>
-                      <Atributes>
-                          Fecha de inicio: {formatDate(competition.dateFrom)}
-                      </Atributes>
-                      <Atributes>||</Atributes>
-                      <Atributes>Fecha de fin: {formatDate(competition.dateTo)}</Atributes>
-                  </p>
-              </LeftColumn>
-              <RightColumn>
-                  <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
-                      <StyledIcon as={EditIcon} />
-                  </ActionButton>
-                  <ActionButton backgroundColor="#e30000" hoverColor="#c30101">
-                      <StyledIcon as={DeleteIcon} />
-                  </ActionButton>
-              </RightColumn>
-          </Elements>
-        </CompetitionCard>
-      </CenteredContainer>
-    )
+    return new Date(dateString).toLocaleDateString('es-ES', options)
+  }
+
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteCompetition.mutate(competition._id, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+        setShowToast(true);
+
+        setTimeout(() => setShowToast(false), 6000);  // Aquí 6000 ms para coincidir con Toast
+      },
+    })
+  }
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false)
+  }
+
+  return (
+    <CenteredContainer>
+      <CompetitionCard>
+        <Elements>
+          <LeftColumn>
+            <Name>{competition.name}</Name>
+            <p>
+              <Atributes>
+                Categoría: <b>{competition.category}</b>
+              </Atributes>
+              <Atributes>||</Atributes>
+              <Atributes>
+                Fecha de inicio: {formatDate(competition.dateFrom)}
+              </Atributes>
+              <Atributes>||</Atributes>
+              <Atributes>
+                Fecha de fin: {formatDate(competition.dateTo)}
+              </Atributes>
+            </p>
+          </LeftColumn>
+          <RightColumn>
+            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
+              <StyledIcon as={EditIcon} />
+            </ActionButton>
+            <ActionButton
+              backgroundColor="#e30000"
+              hoverColor="#c30101"
+              onClick={handleDeleteClick}
+              disabled={deleteCompetition.isPending}
+            >
+              <StyledIcon as={DeleteIcon} />
+            </ActionButton>
+          </RightColumn>
+        </Elements>
+      </CompetitionCard>
+      <ConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          title="Confirmar eliminación"
+          description={`¿Estás seguro de que quieres eliminar la competición "${competition.name}"?`}
+        />
+        {showToast && (
+          <Toast message="La competición ha sido borrada" type="success" duration={6000} />
+        )}
+    </CenteredContainer>
+  )
 }

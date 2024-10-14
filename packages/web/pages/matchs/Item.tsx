@@ -4,6 +4,10 @@ import EditIcon from 'shared/assets/icons/edit.svg?react'
 import DeleteIcon from 'shared/assets/icons/delete.svg?react'
 import { Match } from '~/models/match'
 import { useGetUser } from '~/hooks/users/useGetUser'
+import { useState } from 'react'
+import ConfirmationModal from '../competitions/confirmationModal'
+import Toast from '../competitions/toast'
+import { useDeleteMatch } from '~/hooks/matchs/useDeleteMatch'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -90,6 +94,9 @@ export const MatchTable = ({ match }: { match: Match }) => {
   const { data: referee2Data, isLoading: isLoadingReferee2 } = useGetUser(
     match?.referee2 ?? '',
   )
+  const deleteMatch = useDeleteMatch()
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -98,6 +105,25 @@ export const MatchTable = ({ match }: { match: Match }) => {
       day: 'numeric',
     }
     return new Date(dateString).toLocaleDateString('es-ES', options)
+  }
+
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteMatch.mutate(match._id, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+        setShowToast(true);
+
+        setTimeout(() => setShowToast(false), 6000);  // Aquí 6000 ms para coincidir con Toast
+      },
+    })
+  }
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false)
   }
 
   return (
@@ -119,12 +145,23 @@ export const MatchTable = ({ match }: { match: Match }) => {
             <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
               <StyledIcon as={EditIcon} />
             </ActionButton>
-            <ActionButton backgroundColor="#e30000" hoverColor="#c30101">
+            <ActionButton backgroundColor="#e30000" hoverColor="#c30101" onClick={handleDeleteClick}
+              disabled={deleteMatch.isPending}>
               <StyledIcon as={DeleteIcon} />
             </ActionButton>
           </RightColumn>
         </Elements>
       </MatchCard>
+      <ConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          title="Confirmar eliminación"
+          description={`¿Estás seguro de que quieres eliminar este partido?`}
+        />
+        {showToast && (
+          <Toast message="El partido ha sido borrado" type="success" duration={6000} />
+        )}
     </CenteredContainer>
   )
 }
