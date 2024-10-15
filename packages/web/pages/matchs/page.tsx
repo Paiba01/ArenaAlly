@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-
 import { useGetMatchsByCompetitionId } from '~/hooks/matchs/useGetMatchsById'
 import { MatchTable } from './Item'
-
+import { useParams } from 'react-router-dom';
 
 const PageContainer = styled.div`
   display: flex;
@@ -10,12 +9,16 @@ const PageContainer = styled.div`
   align-items: center;
   width: 100%;
   margin-top: 2em;
+
 `
-const competitionId = '61c69dd6-ad52-446a-8b98-4038153ea401'
 
 export const Matchs = () => {
+  const { competitionId } = useParams();
+  if (!competitionId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>;
+  }
+
   const { data, isLoading } = useGetMatchsByCompetitionId(competitionId)
-  const isAdmin = !data
 
   if (isLoading) return <>Cargando...</>
 

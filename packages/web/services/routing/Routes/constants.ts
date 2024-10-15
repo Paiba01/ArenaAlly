@@ -6,5 +6,8 @@ export const ROUTES = {
   DESIGNATE: '/designate',
   MY_DESIGNATIONS: '/my-designations',
   DOCUMENTS: '/documents',
-  MATCHS: '/competitions/matchs'
+  MATCHS: '/competitions/matchs/:competitionId',
+  STARTPAGE: '/start',
+  LOGIN: '/login',
+  REGISTER: '/register'
 }

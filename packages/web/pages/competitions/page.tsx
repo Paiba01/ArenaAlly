@@ -8,15 +8,16 @@ const PageContainer = styled.div`
   align-items: center;
   width: 100%;
   margin-top: 2em;
+
 `
 export const Competitions = () => {
   const { data, isLoading } = useGetCompetitions()
-  const isAdmin = !data
+
 
   if (isLoading ) return <>Cargando...</>
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div>
       <PageContainer>
         {data &&
           data.map((competition) => (

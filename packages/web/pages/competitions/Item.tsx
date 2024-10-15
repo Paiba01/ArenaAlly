@@ -6,6 +6,8 @@ import { useDeleteCompetition } from '~/hooks/competitions/useDeleteCompetition'
 import { useState } from 'react'
 import ConfirmationModal from './confirmationModal'
 import Toast from './toast'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '~/services/routing/Routes/constants'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -35,8 +37,10 @@ const Elements = styled.div`
   justify-content: space-between;
 `
 
-const LeftColumn = styled.div`
+const LeftColumn = styled.button`
   width: 75%;
+  text-align: left; 
+  cursor: pointer; 
 `
 
 const RightColumn = styled.div`
@@ -101,7 +105,7 @@ export const CompetitionTable = ({competition,}: {competition: Competition}) => 
         setIsDeleteModalOpen(false);
         setShowToast(true);
 
-        setTimeout(() => setShowToast(false), 6000);  // Aquí 6000 ms para coincidir con Toast
+        setTimeout(() => setShowToast(false), 6000);
       },
     })
   }
@@ -110,11 +114,16 @@ export const CompetitionTable = ({competition,}: {competition: Competition}) => 
     setIsDeleteModalOpen(false)
   }
 
+  const navigate = useNavigate(); 
+  const handleClick = () => {
+    navigate(`${ROUTES.MATCHS.replace(':competitionId', competition._id)}`); 
+  };
+
   return (
     <CenteredContainer>
       <CompetitionCard>
         <Elements>
-          <LeftColumn>
+          <LeftColumn onClick={handleClick}>
             <Name>{competition.name}</Name>
             <p>
               <Atributes>
