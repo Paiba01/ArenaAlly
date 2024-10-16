@@ -39,8 +39,8 @@ const Elements = styled.div`
 
 const LeftColumn = styled.button`
   width: 75%;
-  text-align: left; 
-  cursor: pointer; 
+  text-align: left;
+  cursor: pointer;
 `
 
 const RightColumn = styled.div`
@@ -81,7 +81,11 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const CompetitionTable = ({competition,}: {competition: Competition}) => {
+export const CompetitionTable = ({
+  competition,
+}: {
+  competition: Competition
+}) => {
   const deleteCompetition = useDeleteCompetition()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
@@ -102,10 +106,10 @@ export const CompetitionTable = ({competition,}: {competition: Competition}) => 
   const handleConfirmDelete = () => {
     deleteCompetition.mutate(competition._id, {
       onSuccess: () => {
-        setIsDeleteModalOpen(false);
-        setShowToast(true);
+        setIsDeleteModalOpen(false)
+        setShowToast(true)
 
-        setTimeout(() => setShowToast(false), 6000);
+        setTimeout(() => setShowToast(false), 6000)
       },
     })
   }
@@ -114,10 +118,15 @@ export const CompetitionTable = ({competition,}: {competition: Competition}) => 
     setIsDeleteModalOpen(false)
   }
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate()
+
+  const handleEditClick = () => {
+    navigate(`${ROUTES.EDITCOMPETITIONS.replace(':competitionId', competition._id)}`)
+  }
+  
   const handleClick = () => {
-    navigate(`${ROUTES.MATCHS.replace(':competitionId', competition._id)}`); 
-  };
+    navigate(`${ROUTES.MATCHS.replace(':competitionId', competition._id)}`)
+  }
 
   return (
     <CenteredContainer>
@@ -140,7 +149,11 @@ export const CompetitionTable = ({competition,}: {competition: Competition}) => 
             </p>
           </LeftColumn>
           <RightColumn>
-            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
+            <ActionButton
+              backgroundColor="#e3e300"
+              hoverColor="#cbcb14"
+              onClick={handleEditClick}
+            >
               <StyledIcon as={EditIcon} />
             </ActionButton>
             <ActionButton
@@ -155,15 +168,19 @@ export const CompetitionTable = ({competition,}: {competition: Competition}) => 
         </Elements>
       </CompetitionCard>
       <ConfirmationModal
-          isOpen={isDeleteModalOpen}
-          onClose={handleCancelDelete}
-          onConfirm={handleConfirmDelete}
-          title="Confirmar eliminación"
-          description={`¿Estás seguro de que quieres eliminar la competición "${competition.name}"?`}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Confirmar eliminación"
+        description={`¿Estás seguro de que quieres eliminar la competición "${competition.name}"?`}
+      />
+      {showToast && (
+        <Toast
+          message="La competición ha sido borrada"
+          type="success"
+          duration={6000}
         />
-        {showToast && (
-          <Toast message="La competición ha sido borrada" type="success" duration={6000} />
-        )}
+      )}
     </CenteredContainer>
   )
 }

@@ -2,6 +2,8 @@ export const ROUTES = {
   ADMIN: '/admin',
   HOME: '/',
   COMPETITIONS: '/competitions',
+  CREATECOMPETITIONS: '/competitions/create',
+  EDITCOMPETITIONS: '/competitions/edit/:competitionId',
   REFEREES: '/referees',
   DESIGNATE: '/designate',
   MY_DESIGNATIONS: '/my-designations',
