@@ -8,6 +8,8 @@ import { useState } from 'react'
 import ConfirmationModal from '../competitions/confirmationModal'
 import Toast from '../competitions/toast'
 import { useDeleteMatch } from '~/hooks/matchs/useDeleteMatch'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '~/services/routing/Routes/constants'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -50,7 +52,7 @@ const RightColumn = styled.div`
 const AtributesDate = styled.span`
   margin-right: 4em;
   margin-top: 2em !important;
-  margin-bottom: 1em; 
+  margin-bottom: 1em;
   font-size: 19px;
   display: block;
 `
@@ -59,7 +61,6 @@ const Atributes = styled.span`
   margin-right: 4em;
   margin-bottom: 1em;
   font-size: 18px;
-  
 `
 const ActionButton = styled.button<{
   backgroundColor: string
@@ -114,16 +115,25 @@ export const MatchTable = ({ match }: { match: Match }) => {
   const handleConfirmDelete = () => {
     deleteMatch.mutate(match._id, {
       onSuccess: () => {
-        setIsDeleteModalOpen(false);
-        setShowToast(true);
+        setIsDeleteModalOpen(false)
+        setShowToast(true)
 
-        setTimeout(() => setShowToast(false), 6000);  // Aquí 6000 ms para coincidir con Toast
+        setTimeout(() => setShowToast(false), 6000)
       },
     })
   }
 
   const handleCancelDelete = () => {
     setIsDeleteModalOpen(false)
+  }
+  const navigate = useNavigate()
+
+  const handleEditClick = () => {
+    navigate(
+      ROUTES.EDITMATCHS
+        .replace(':competitionId', match.competitionId)
+        .replace(':matchId', match._id)
+    )
   }
 
   return (
@@ -142,26 +152,38 @@ export const MatchTable = ({ match }: { match: Match }) => {
             </p>
           </LeftColumn>
           <RightColumn>
-            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
+            <ActionButton
+              backgroundColor="#e3e300"
+              hoverColor="#cbcb14"
+              onClick={handleEditClick}
+            >
               <StyledIcon as={EditIcon} />
             </ActionButton>
-            <ActionButton backgroundColor="#e30000" hoverColor="#c30101" onClick={handleDeleteClick}
-              disabled={deleteMatch.isPending}>
+            <ActionButton
+              backgroundColor="#e30000"
+              hoverColor="#c30101"
+              onClick={handleDeleteClick}
+              disabled={deleteMatch.isPending}
+            >
               <StyledIcon as={DeleteIcon} />
             </ActionButton>
           </RightColumn>
         </Elements>
       </MatchCard>
       <ConfirmationModal
-          isOpen={isDeleteModalOpen}
-          onClose={handleCancelDelete}
-          onConfirm={handleConfirmDelete}
-          title="Confirmar eliminación"
-          description={`¿Estás seguro de que quieres eliminar este partido?`}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Confirmar eliminación"
+        description={`¿Estás seguro de que quieres eliminar este partido?`}
+      />
+      {showToast && (
+        <Toast
+          message="El partido ha sido borrado"
+          type="success"
+          duration={6000}
         />
-        {showToast && (
-          <Toast message="El partido ha sido borrado" type="success" duration={6000} />
-        )}
+      )}
     </CenteredContainer>
   )
 }

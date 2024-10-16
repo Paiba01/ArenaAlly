@@ -9,6 +9,7 @@ export const ROUTES = {
   MY_DESIGNATIONS: '/my-designations',
   DOCUMENTS: '/documents',
   MATCHS: '/competitions/matchs/:competitionId',
+  EDITMATCHS: '/competitions/:competitionId/matchs/edit/:matchId',
   STARTPAGE: '/start',
   LOGIN: '/login',
   REGISTER: '/register'

@@ -15,6 +15,7 @@ import { Login } from '~/pages/Login/page'
 import styled from 'styled-components'
 import { CreateCompetitions } from '~/pages/competitions/createPage/page'
 import { EditCompetitions } from '~/pages/competitions/editPage/page'
+import { EditMatchs } from '~/pages/matchs/editMatch/page'
 
 const BackgroundContainer = styled.div`
   background-image: url('/images/background-app2.png');
@@ -47,6 +48,7 @@ const AppRoutes = () => (
         <Route path={ROUTES.MY_DESIGNATIONS} element={<My_designations />} />
         <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
         <Route path={ROUTES.MATCHS} element={<Matchs />} />
+        <Route path={ROUTES.EDITMATCHS} element={<EditMatchs />} />
       </Route>
 
       <Route path={ROUTES.STARTPAGE} element={<StartPage />} />

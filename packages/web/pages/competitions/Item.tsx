@@ -14,6 +14,7 @@ const CenteredContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 1em;
 `
 
 const CompetitionCard = styled.div`
