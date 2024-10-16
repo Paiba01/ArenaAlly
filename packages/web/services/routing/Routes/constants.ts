@@ -5,6 +5,7 @@ export const ROUTES = {
   CREATECOMPETITIONS: '/competitions/create',
   EDITCOMPETITIONS: '/competitions/edit/:competitionId',
   REFEREES: '/referees',
+  EDITREFEREE: '/referees/:userId',
   DESIGNATE: '/designate',
   MY_DESIGNATIONS: '/my-designations',
   DOCUMENTS: '/documents',

@@ -16,6 +16,7 @@ import styled from 'styled-components'
 import { CreateCompetitions } from '~/pages/competitions/createPage/page'
 import { EditCompetitions } from '~/pages/competitions/editPage/page'
 import { EditMatchs } from '~/pages/matchs/editMatch/page'
+import { EditReferee } from '~/pages/referees/editReferee/page'
 
 const BackgroundContainer = styled.div`
   background-image: url('/images/background-app2.png');
@@ -44,6 +45,7 @@ const AppRoutes = () => (
         <Route path={ROUTES.CREATECOMPETITIONS} element={<CreateCompetitions />} />
         <Route path={ROUTES.EDITCOMPETITIONS} element={<EditCompetitions />} />
         <Route path={ROUTES.REFEREES} element={<Referees />} />
+        <Route path={ROUTES.EDITREFEREE} element={<EditReferee />} />
         <Route path={ROUTES.DESIGNATE} element={<Designate />} />
         <Route path={ROUTES.MY_DESIGNATIONS} element={<My_designations />} />
         <Route path={ROUTES.DOCUMENTS} element={<Documents />} />

@@ -1,7 +1,11 @@
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import EditIcon from 'shared/assets/icons/edit.svg?react'
-import isActive from 'shared/assets/icons/isActive.svg?react'
+import isActiveIcon from 'shared/assets/icons/isActive.svg?react'
 import { User } from '~/models/User'
+import { useEditUser } from '~/hooks/users/useEditUser'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '~/services/routing/Routes/constants'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -23,7 +27,6 @@ const Name = styled.div`
   font-size: 22px;
   font-weight: bold;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
   margin-bottom: 1em;
 `
 const Elements = styled.div`
@@ -78,8 +81,43 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const UserTable: React.FC<{ user: User }> = ({ user }) => {
+export const UserTable: React.FC<{ user: User }> = ({user}) => {
   const statusColor = user.isActive ? 'green' : 'red'
+  const editUser = useEditUser()
+
+  const [userData, setUserData] = useState({
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    isActive: user.isActive,
+    isAdmin: user.isAdmin,
+  })
+
+  const handleActive = () => {
+    const updatedUser = {
+      id: user._id,
+      ...userData,
+      isActive: !userData.isActive, 
+    }
+
+    editUser.mutate(updatedUser, {
+      onSuccess: () => {
+        console.log('Usuario editado exitosamente')
+        setUserData((prev) => ({
+          ...prev,
+          isActive: !prev.isActive,
+        }))
+      },
+      onError: (error) => {
+        console.error('Error al editar el usuario:', error)
+      },
+    })
+  }
+
+  const navigate = useNavigate()
+  const handleEditClick = () => {
+    navigate(`${ROUTES.EDITREFEREE.replace(':userId', user._id)}`)
+  }
 
   return (
     <CenteredContainer>
@@ -94,11 +132,12 @@ export const UserTable: React.FC<{ user: User }> = ({ user }) => {
           <RightColumn>
             <ActionButton
               backgroundColor={statusColor}
-              hoverColor={user.isActive ? '#00a000' : '#bd0000'}
+              hoverColor={userData.isActive ? '#00a000' : '#bd0000'}
+              onClick={handleActive}
             >
-              <StyledIcon as={isActive} />
+              <StyledIcon as={isActiveIcon} />
             </ActionButton>
-            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14">
+            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14" onClick={handleEditClick}>
               <StyledIcon as={EditIcon} />
             </ActionButton>
           </RightColumn>

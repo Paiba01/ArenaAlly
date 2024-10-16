@@ -62,7 +62,7 @@ export const Competitions = () => {
   }
 
   const handleBackClick = () => {
-    navigate(ROUTES.COMPETITIONS)
+    navigate(ROUTES.ADMIN)
   }
 
   if (isLoading) return <>Cargando...</>
