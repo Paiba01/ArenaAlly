@@ -8,7 +8,7 @@ export const ROUTES = {
   EDITREFEREE: '/referees/:adminId/edit/:userId',
   DESIGNATE: '/designate/userId',
   MY_DESIGNATIONS: '/my-designations/:userId',
-  DOCUMENTS: '/documents',
+  DOCUMENTS: '/documents/:userId',
   MATCHS: '/competitions/:userId/matchs/:competitionId',
   EDITMATCHS: '/competitions/:userId/:competitionId/matchs/edit/:matchId',
   STARTPAGE: '/start',

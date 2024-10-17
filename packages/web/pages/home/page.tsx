@@ -39,7 +39,7 @@ export const Home = () => {
         color="blue"
         label={t('ITEMS.DOCUMENTS')}
         image="/images/documents.png"
-        to={ROUTES.DOCUMENTS}
+        to={`${ROUTES.DOCUMENTS.replace(':userId', userId)}`}
       />
     </Container>
   )
