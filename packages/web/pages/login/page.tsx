@@ -83,8 +83,19 @@ const ErrorText = styled.span`
   font-size: 1rem;
   margin-bottom: 0.5rem;
   font-weight: bold;
+  margin-bottom: 1em;
+`
 
-  margin-bottom: 1em
+const RegisterText = styled.a`
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0.7rem;
+  text-align: left;
+  text-decoration: underline;  
+  cursor: pointer;
+  align-self: flex-start;       
+  margin-left: 10%;             
 `
 
 export const Login = () => {
@@ -142,6 +153,10 @@ export const Login = () => {
     setPasswordError('')
   }
 
+  const handleRegisterClick = () => {
+    navigate(ROUTES.REGISTER)
+  }
+
   return (
     <StartPageContainer>
       <Title>ArenaAlly</Title>
@@ -162,10 +177,14 @@ export const Login = () => {
           onChange={handlePasswordChange}
           error={!!passwordError}
         />
-          {passwordError && <ErrorText>{passwordError}</ErrorText>}
+        {passwordError && <ErrorText>{passwordError}</ErrorText>}
         <Button onClick={handleClick} disabled={isSubmitting}>
-          {isSubmitting ? 'Cargando...' : 'Ingresar'}
+          {isSubmitting ? 'Cargando...' : 'Entrar'}
         </Button>
+        {/* Texto de registro con subrayado y redirección */}
+        <RegisterText onClick={handleRegisterClick}>
+          ¿Aún no estás registrado? Pulsa aquí para registrarte
+        </RegisterText>
       </LoginCard>
     </StartPageContainer>
   )

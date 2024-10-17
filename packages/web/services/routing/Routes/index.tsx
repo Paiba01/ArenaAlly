@@ -11,12 +11,13 @@ import { My_designations } from '~/pages/my_designations/page'
 import { Documents } from '~/pages/documents/page'
 import { Matchs } from '~/pages/matchs/page'
 import { StartPage } from '~/pages/startPage/page'
-import { Login } from '~/pages/Login/page'
+import { Login } from '~/pages/login/page'
 import styled from 'styled-components'
 import { CreateCompetitions } from '~/pages/competitions/createPage/page'
 import { EditCompetitions } from '~/pages/competitions/editPage/page'
 import { EditMatchs } from '~/pages/matchs/editMatch/page'
 import { EditReferee } from '~/pages/referees/editReferee/page'
+import { Register } from '~/pages/register/page'
 
 const BackgroundContainer = styled.div`
   background-image: url('/images/background-app2.png');
@@ -55,6 +56,7 @@ const AppRoutes = () => (
 
       <Route path={ROUTES.STARTPAGE} element={<StartPage />} />
       <Route path={ROUTES.LOGIN} element={<Login />} />
+      <Route path={ROUTES.REGISTER} element={<Register />} />
       
       <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
     </Routes>

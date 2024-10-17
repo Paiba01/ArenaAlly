@@ -221,6 +221,7 @@ export const EditReferee = () => {
         </InputGroup>
         <InputGroup>
           <SmallInput
+            type='password'
             name="password"
             placeholder="Contraseña"
             value={userData.password}
