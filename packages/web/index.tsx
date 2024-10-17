@@ -8,15 +8,22 @@ import theme from 'shared/styles/theme'
 import { ThemeProvider } from 'styled-components'
 
 import AppRoutes from './services/routing/Routes'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const App = () => (
-  <ThemeProvider theme={theme}>
-    <GlobalStyle />
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  </ThemeProvider>
-)
+const queryClient = new QueryClient()
+
+const App = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ThemeProvider>
+  )
+}
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
