@@ -9,6 +9,7 @@ import { UserSchema } from './models/mongoose/schema'
 import { userProviders } from './providers'
 import { GetUsersHandler } from '../application/queries/handlers/get-users'
 import { EditUserHandler } from '../application/commands/handlers/edit-user'
+import { GetUserByEmailHandler } from '../application/queries/handlers/get-user-by-email'
 
 const controllers = [UsersController]
 
@@ -17,7 +18,7 @@ const commandHandlers = [
   EditUserHandler,
 ]
 
-const queryHandlers = [GetUserHandler, GetUsersHandler]
+const queryHandlers = [GetUserHandler, GetUsersHandler, GetUserByEmailHandler]
 
 @Module({
   controllers,

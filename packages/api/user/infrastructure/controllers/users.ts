@@ -26,6 +26,8 @@ import { GetUsers } from '~/user/application/queries/get-users'
 import { EditUserDto } from '~/user/dto/request/edit-user'
 import { EditUserHandler } from '~/user/application/commands/handlers/edit-user'
 import { EditUser } from '~/user/application/commands/edit-user'
+import { GetUserByEmailHandler } from '~/user/application/queries/handlers/get-user-by-email'
+import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
   
   @ApiTags('Users')
   @Controller('users')
@@ -56,6 +58,26 @@ import { EditUser } from '~/user/application/commands/edit-user'
         await this.queryBus.execute(
           GetUser.with({
             id,
+          }),
+        )
+  
+      if (response.isErr())
+        throw new BadRequestException(HttpError.fromException(response.error))
+  
+      return response.value
+    }
+
+    @ApiOperation({ summary: 'Get a User by email' })
+    @ApiOkResponse({
+      description: 'Users/',
+      type: UserDto,
+    })
+    @Get('searchEmail/:email')
+    async getUserByEmail(@Param('email') email: string): Promise<UserDto> {
+      const response: Awaited<ReturnType<GetUserByEmailHandler['execute']>> =
+        await this.queryBus.execute(
+          GetUserByEmail.with({
+            email,
           }),
         )
   

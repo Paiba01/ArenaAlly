@@ -9,6 +9,7 @@ import UserId from "~/user/domain/models/id";
 import { UserDto } from "~/user/dto/response/user";
 
 import { UserSchema } from "../models/mongoose/schema";
+import UserEmail from "~/user/domain/models/email";
 
 @Injectable()
 export class MongooseUsersFinder implements UsersFinder {
@@ -27,5 +28,13 @@ export class MongooseUsersFinder implements UsersFinder {
 
     async getAll(): Promise<UserDto[]> {
         return await this.users.find().exec()
+    }
+
+    async findByEmail(email: UserEmail): Promise<Result<UserDto, NotFoundUser>> {
+        const user = await this.users.findOne({email: email.value}).exec()
+
+        if(!user) return err(NotFoundUser.withEmail(email.value))
+
+        return ok(user)
     }
 }
