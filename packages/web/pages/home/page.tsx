@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Item } from '../admin/Item'
 import styled from 'styled-components'
 import { ROUTES } from '~/services/routing/Routes/constants'
+import { useParams } from 'react-router-dom'
 
 const Container = styled.div`
   display: grid;
@@ -13,6 +14,11 @@ const Container = styled.div`
 
 export const Home = () => {
   const { t } = useTranslation('admin')
+  const { userId } = useParams()
+
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>
+  }
 
   return (
     <Container>
@@ -20,13 +26,13 @@ export const Home = () => {
         color="red"
         label={t('ITEMS.COMPETITION')}
         image="/images/competitions2.png"
-        to={ROUTES.COMPETITIONS}
+        to={`${ROUTES.COMPETITIONS.replace(':userId', userId)}`}
         />
       <Item
         color="orange"
         label={t('ITEMS.DESIGNATIONS')}
         image="/images/designations.png"
-        to={ROUTES.MY_DESIGNATIONS}
+        to={`${ROUTES.MY_DESIGNATIONS.replace(':userId', userId)}`}
 
         />
       <Item

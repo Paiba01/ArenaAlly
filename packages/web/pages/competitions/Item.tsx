@@ -8,6 +8,7 @@ import ConfirmationModal from './confirmationModal'
 import Toast from './toast'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
+import { User } from '~/models/User'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -84,8 +85,10 @@ const StyledIcon = styled.svg`
 
 export const CompetitionTable = ({
   competition,
+  userData
 }: {
-  competition: Competition
+  competition: Competition,
+  userData: User
 }) => {
   const deleteCompetition = useDeleteCompetition()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -126,7 +129,9 @@ export const CompetitionTable = ({
   }
   
   const handleClick = () => {
-    navigate(`${ROUTES.MATCHS.replace(':competitionId', competition._id)}`)
+    navigate(`${ROUTES.MATCHS
+      .replace(':competitionId', competition._id)
+      .replace(':userId', userData._id)}`)
   }
 
   return (
@@ -149,23 +154,25 @@ export const CompetitionTable = ({
               </Atributes>
             </p>
           </LeftColumn>
+          {userData?.isAdmin && (
           <RightColumn>
-            <ActionButton
-              backgroundColor="#e3e300"
-              hoverColor="#cbcb14"
-              onClick={handleEditClick}
-            >
-              <StyledIcon as={EditIcon} />
-            </ActionButton>
-            <ActionButton
-              backgroundColor="#e30000"
-              hoverColor="#c30101"
-              onClick={handleDeleteClick}
-              disabled={deleteCompetition.isPending}
-            >
-              <StyledIcon as={DeleteIcon} />
-            </ActionButton>
+              <ActionButton
+                backgroundColor="#e3e300"
+                hoverColor="#cbcb14"
+                onClick={handleEditClick}
+              >
+                <StyledIcon as={EditIcon} />
+              </ActionButton>
+              <ActionButton
+                backgroundColor="#e30000"
+                hoverColor="#c30101"
+                onClick={handleDeleteClick}
+                disabled={deleteCompetition.isPending}
+              >
+                <StyledIcon as={DeleteIcon} />
+              </ActionButton>
           </RightColumn>
+          )}
         </Elements>
       </CompetitionCard>
       <ConfirmationModal

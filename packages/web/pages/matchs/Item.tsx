@@ -10,6 +10,7 @@ import Toast from '../competitions/toast'
 import { useDeleteMatch } from '~/hooks/matchs/useDeleteMatch'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
+import { User } from '~/models/User'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -88,7 +89,7 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const MatchTable = ({ match }: { match: Match }) => {
+export const MatchTable = ({ match, userData }: { match: Match, userData:User }) => {
   const { data: referee1Data, isLoading: isLoadingReferee1 } = useGetUser(
     match?.referee1 ?? '',
   )
@@ -151,6 +152,7 @@ export const MatchTable = ({ match }: { match: Match }) => {
               <Atributes>Arbitro: {referee2Data?.name}</Atributes>
             </p>
           </LeftColumn>
+          {userData?.isAdmin && (
           <RightColumn>
             <ActionButton
               backgroundColor="#e3e300"
@@ -168,6 +170,7 @@ export const MatchTable = ({ match }: { match: Match }) => {
               <StyledIcon as={DeleteIcon} />
             </ActionButton>
           </RightColumn>
+          )}
         </Elements>
       </MatchCard>
       <ConfirmationModal

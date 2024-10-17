@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import { useGetUsers } from '~/hooks/users/useGetAllUsers'
 import { UserTable } from './Item'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 
 
@@ -39,11 +39,15 @@ const BackButton = styled.button`
 
 export const Referees = () => {
   const { data, isLoading } = useGetUsers()
+  const { userId } = useParams()
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>
+  }
 
   const navigate = useNavigate()
 
   const handleClick = () => {
-      navigate(ROUTES.ADMIN)
+      navigate(`${ROUTES.ADMIN.replace(':userId', userId)}`)
   }
 
   if (isLoading) return <>Cargando...</>

@@ -1,8 +1,9 @@
 import { useGetCompetitions } from '~/hooks/competitions/useGetCompetitions'
 import styled from 'styled-components'
 import { CompetitionTable } from './Item'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
+import { useGetUser } from '~/hooks/users/useGetUser'
 
 const PageContainer = styled.div`
   display: flex;
@@ -54,15 +55,30 @@ const CreateButton = styled.button`
 `
 
 export const Competitions = () => {
-  const { data, isLoading } = useGetCompetitions()
+  const { userId } = useParams()
   const navigate = useNavigate()
+
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>
+  }
+
+  const { data: userData, isLoading: isUserLoading, error: userError } = useGetUser(userId);
+  const { data, isLoading } = useGetCompetitions()
+
+  if (!userData) {
+    return <div>Error: no se ha proporcionado un ID de usuario.</div>
+  }
 
   const handleClick = () => {
     navigate(ROUTES.CREATECOMPETITIONS)
   }
 
   const handleBackClick = () => {
-    navigate(ROUTES.ADMIN)
+    if(userData?.isAdmin == false){
+      navigate(`${ROUTES.HOME.replace(':userId', userData._id)}`)
+    }else{
+      navigate(`${ROUTES.ADMIN.replace(':userId', userData._id)}`)
+    }
   }
 
   if (isLoading) return <>Cargando...</>
@@ -71,12 +87,14 @@ export const Competitions = () => {
     <div>
       <ButtonContainer>
         <BackButton onClick={handleBackClick}>Volver</BackButton>
-        <CreateButton onClick={handleClick}>Crear competición</CreateButton>
+        {userData?.isAdmin && (
+          <CreateButton onClick={handleClick}>Crear competición</CreateButton>
+        )}
       </ButtonContainer>
       <PageContainer>
         {data &&
           data.map((competition) => (
-            <CompetitionTable key={competition._id} competition={competition} />
+            <CompetitionTable key={competition._id} competition={competition} userData={userData}/>
           ))}
       </PageContainer>
     </div>

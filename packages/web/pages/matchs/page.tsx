@@ -3,6 +3,7 @@ import { useGetMatchsByCompetitionId } from '~/hooks/matchs/useGetMatchsById'
 import { MatchTable } from './Item'
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '~/services/routing/Routes/constants';
+import { useGetUser } from '~/hooks/users/useGetUser';
 
 const PageContainer = styled.div`
   display: flex;
@@ -39,14 +40,26 @@ const BackButton = styled.button`
 
 export const Matchs = () => {
   const { competitionId } = useParams();
+  const { userId } = useParams();
+  
   if (!competitionId) {
     return <div>Error: no se ha proporcionado un ID de competición.</div>;
+  }
+
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>;
+  }
+
+  const { data: userData, isLoading: isUserLoading, error: userError } = useGetUser(userId);
+
+  if (!userData) {
+    return <div>Error: Su sesión ha expirado.</div>;
   }
 
   const navigate = useNavigate()
 
   const handleClick = () => {
-      navigate(ROUTES.COMPETITIONS)
+      navigate(`${ROUTES.COMPETITIONS.replace(':userId', userId)}`)
   }
 
   const { data, isLoading } = useGetMatchsByCompetitionId(competitionId)
@@ -61,7 +74,7 @@ export const Matchs = () => {
       <PageContainer>
         {data &&
           data.map((match) => (
-            <MatchTable key={match._id} match={match} />
+            <MatchTable key={match._id} match={match} userData={userData}/>
           ))}
       </PageContainer>
     </div>

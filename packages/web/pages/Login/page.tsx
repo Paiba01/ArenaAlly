@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { useGetUserByEmail } from '~/hooks/users/useGetUserByEmail'
 import { ROUTES } from '~/services/routing/Routes/constants'
 
 const StartPageContainer = styled.div`
@@ -12,9 +13,9 @@ const StartPageContainer = styled.div`
   background-image: url('/images/background-start2.png');
   background-size: cover;
   background-position: center;
-
   overflow: hidden;
 `
+
 const Title = styled.h1`
   color: #00bf63;
   font-size: 7rem;
@@ -32,7 +33,6 @@ const LoginCard = styled.div`
   margin-bottom: 1em;
   width: 40%;
   height: 40%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -45,11 +45,15 @@ const LoginText = styled.span`
   margin-bottom: 2.7rem;
 `
 
-const Input = styled.input`
+interface InputProps {
+  error?: boolean;
+}
+
+const Input = styled.input<InputProps>`
   width: 80%;
   padding: 0.8rem;
   margin-bottom: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.error ? 'red' : '#ddd'};
   border-radius: 0.25rem;
   font-size: 1.2rem;
   color: white;
@@ -62,7 +66,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: 80%;
   padding: 0.8rem;
-  background-color: #00a859;
+  background-color: #006133;
   color: white;
   border: none;
   border-radius: 0.25rem;
@@ -70,20 +74,72 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #008c47;
+    background-color: #047d41;
   }
+`
+
+const ErrorText = styled.span`
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+
+  margin-bottom: 1em
 `
 
 export const Login = () => {
   const [email, setEmail] = useState('')
-  const navigate = useNavigate()
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleClick = () => {
-    if (email === 'paiba2012@gmail.com') {
-      navigate(ROUTES.ADMIN)
-    } else {
-      navigate(ROUTES.HOME)
+  const navigate = useNavigate()
+  const { refetch: getUserByEmail, data: userData, isError, error } = useGetUserByEmail(email)
+
+  const handleClick = async () => {
+    setEmailError('')
+    setPasswordError('')
+    setIsSubmitting(true)
+
+    try {
+      await getUserByEmail()
+
+      if (isError) {
+        setEmailError('Error al buscar el usuario. Por favor, intente de nuevo.')
+        return
+      }
+
+      if (!userData) {
+        setEmailError('No se ha encontrado un usuario con este email.')
+        return
+      }
+
+      if (userData.password !== password) {
+        setPasswordError('Contraseña incorrecta.')
+        return
+      }
+
+      if (userData.isAdmin) {
+        navigate(`${ROUTES.ADMIN.replace(':userId', userData._id)}`)
+      } else {
+        navigate(`${ROUTES.HOME.replace(':userId', userData._id)}`)
+      }
+    } catch (error) {
+      setEmailError('Ocurrió un error inesperado. Por favor, intente de nuevo.')
+    } finally {
+      setIsSubmitting(false)
     }
+  }
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value)
+    setEmailError('')
+  }
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value)
+    setPasswordError('')
   }
 
   return (
@@ -95,10 +151,21 @@ export const Login = () => {
           type="text"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleEmailChange}
+          error={!!emailError}
         />
-        <Input type="password" placeholder="Contraseña" />
-        <Button onClick={handleClick}>Ingresar</Button>
+        {emailError && <ErrorText>{emailError}</ErrorText>}
+        <Input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={handlePasswordChange}
+          error={!!passwordError}
+        />
+          {passwordError && <ErrorText>{passwordError}</ErrorText>}
+        <Button onClick={handleClick} disabled={isSubmitting}>
+          {isSubmitting ? 'Cargando...' : 'Ingresar'}
+        </Button>
       </LoginCard>
     </StartPageContainer>
   )
