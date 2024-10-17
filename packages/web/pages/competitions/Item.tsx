@@ -125,7 +125,7 @@ export const CompetitionTable = ({
   const navigate = useNavigate()
 
   const handleEditClick = () => {
-    navigate(`${ROUTES.EDITCOMPETITIONS.replace(':competitionId', competition._id)}`)
+    navigate(`${ROUTES.EDITCOMPETITIONS.replace(':competitionId', competition._id).replace(':userId', userData._id)}`)
   }
   
   const handleClick = () => {

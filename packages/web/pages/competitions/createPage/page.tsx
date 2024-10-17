@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { useCreateCompetition } from '~/hooks/competitions/useCreateCompetition'
 
@@ -158,6 +158,12 @@ const CancelButton = styled.button`
 
 export const CreateCompetitions = () => {
   const navigate = useNavigate()
+  const { userId } = useParams()
+
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>
+  }
+
   const createCompetition = useCreateCompetition()
   const [competitionData, setCompetitionData] = useState<CreateCompetition>({
     name: '',
@@ -193,7 +199,7 @@ export const CreateCompetitions = () => {
     createCompetition.mutate(competition, {
       onSuccess: () => {
         console.log('Competición creada exitosamente')
-        navigate(ROUTES.COMPETITIONS)
+        navigate(`${ROUTES.COMPETITIONS.replace(':userId', userId)}`)
       },
       onError: (error) => {
         console.error('Error al crear la competición:', error)
@@ -210,7 +216,7 @@ export const CreateCompetitions = () => {
       dateTo: '',
     })
 
-    navigate(ROUTES.COMPETITIONS)
+    navigate(`${ROUTES.COMPETITIONS.replace(':userId', userId)}`)
   }
 
   return (

@@ -141,9 +141,16 @@ const CancelButton = styled.button`
 
 export const EditCompetitions = () => {
   const { competitionId } = useParams()
+  const { userId } = useParams()
+
   if (!competitionId) {
     return <div>Error: no se ha proporcionado un ID de competición.</div>
   }
+
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>
+  }
+
   const navigate = useNavigate()
   const editCompetition = useEditCompetition()
   const [competitionData, setCompetitionData] = useState<EditCompetition>({
@@ -160,7 +167,7 @@ export const EditCompetitions = () => {
       ...competitionData,
       [name]: value,
     })
-    // Limpiar el error cuando se ingresa un valor
+
     if (value) {
       setErrors((prev) => ({ ...prev, [name]: false }))
     }
@@ -171,7 +178,7 @@ export const EditCompetitions = () => {
       ...competitionData,
       category: e.target.value,
     })
-    // Limpiar el error cuando se selecciona una categoría
+    
     if (e.target.value) {
       setErrors((prev) => ({ ...prev, category: false }))
     }
@@ -208,7 +215,7 @@ export const EditCompetitions = () => {
     editCompetition.mutate(competition, {
       onSuccess: () => {
         console.log('Competición editada exitosamente')
-        navigate(ROUTES.COMPETITIONS)
+        navigate(`${ROUTES.COMPETITIONS.replace(':userId', userId)}`)
       },
       onError: (error) => {
         console.error('Error al editar la competición:', error)
@@ -224,7 +231,7 @@ export const EditCompetitions = () => {
       dateTo: '',
     })
 
-    navigate(ROUTES.COMPETITIONS)
+    navigate(`${ROUTES.COMPETITIONS.replace(':userId', userId)}`)
   }
 
   return (

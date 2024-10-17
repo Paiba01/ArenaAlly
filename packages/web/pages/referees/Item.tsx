@@ -81,7 +81,13 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const UserTable: React.FC<{ user: User }> = ({user}) => {
+export const UserTable= ({
+  user,
+  adminId
+}: {
+  user: User,
+  adminId: string
+}) => {
   const statusColor = user.isActive ? 'green' : 'red'
   const editUser = useEditUser()
 
@@ -116,7 +122,7 @@ export const UserTable: React.FC<{ user: User }> = ({user}) => {
 
   const navigate = useNavigate()
   const handleEditClick = () => {
-    navigate(`${ROUTES.EDITREFEREE.replace(':userId', user._id)}`)
+    navigate(`${ROUTES.EDITREFEREE.replace(':userId', user._id).replace(':adminId', adminId)}`)
   }
 
   return (

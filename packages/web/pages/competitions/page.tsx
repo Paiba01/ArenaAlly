@@ -70,7 +70,7 @@ export const Competitions = () => {
   }
 
   const handleClick = () => {
-    navigate(ROUTES.CREATECOMPETITIONS)
+    navigate(`${ROUTES.CREATECOMPETITIONS.replace(':userId', userId)}`)
   }
 
   const handleBackClick = () => {

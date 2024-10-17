@@ -6,6 +6,7 @@ import { useEditCompetition } from '~/hooks/competitions/useEditCompetitions'
 import { useGetUser } from '~/hooks/users/useGetUser'
 import { useEditUser } from '~/hooks/users/useEditUser'
 import { WriteUser } from '~/models/writeUser'
+import { User } from '~/models/User'
 
 export type EditCompetition = {
   name: string
@@ -125,13 +126,18 @@ const CancelButton = styled.button`
 
 export const EditReferee = () => {
   const { userId } = useParams()
+  const { adminId } = useParams()
   if (!userId) {
-    return <div>Error: no se ha proporcionado un ID de competición.</div>
+    return <div>Error: no se ha proporcionado un ID del usuario.</div>
+  }
+
+  if (!adminId) {
+    return <div>Error: no se ha proporcionado un ID del administrador.</div>
   }
 
   const { data } = useGetUser(userId)
   if (!data) {
-    return <div>Error: no se ha proporcionado un ID de competición.</div>
+    return <div>Error: no se ha obtenido el usuario.</div>
   }
 
   const navigate = useNavigate()
@@ -172,7 +178,7 @@ export const EditReferee = () => {
     editUser.mutate(user, {
       onSuccess: () => {
         console.log('Usuario editado exitosamente')
-        navigate(ROUTES.REFEREES)
+        navigate(`${ROUTES.REFEREES.replace(':userId', adminId)}`)
       },
       onError: (error) => {
         console.error('Error al editar el usuario:', error)
@@ -189,7 +195,7 @@ export const EditReferee = () => {
         isAdmin: data.isAdmin,
     })
 
-    navigate(ROUTES.REFEREES)
+    navigate(`${ROUTES.REFEREES.replace(':userId', adminId)}`)
   }
 
   return (

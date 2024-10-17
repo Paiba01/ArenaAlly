@@ -4,6 +4,7 @@ import { useGetUsers } from '~/hooks/users/useGetAllUsers'
 import { UserTable } from './Item'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
+import { useGetUser } from '~/hooks/users/useGetUser'
 
 
 const PageContainer = styled.div`
@@ -40,6 +41,7 @@ const BackButton = styled.button`
 export const Referees = () => {
   const { data, isLoading } = useGetUsers()
   const { userId } = useParams()
+  
   if (!userId) {
     return <div>Error: no se ha proporcionado un ID de competición.</div>
   }
@@ -60,7 +62,7 @@ export const Referees = () => {
       <PageContainer>
         {data &&
           data.map((user) => (
-            <UserTable key={user._id} user={user} />
+            <UserTable key={user._id} user={user} adminId={userId}/>
           ))}
       </PageContainer>
     </div>
