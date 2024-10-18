@@ -18,6 +18,8 @@ import { EditCompetitions } from '~/pages/competitions/editPage/page'
 import { EditMatchs } from '~/pages/matchs/editMatch/page'
 import { EditReferee } from '~/pages/referees/editReferee/page'
 import { Register } from '~/pages/register/page'
+import { DesignateMatchs } from '~/pages/designateMatchs/page'
+import { DesignateReferees } from '~/pages/designateMatchs/designateReferees/page'
 
 const BackgroundContainer = styled.div`
   background-image: url('/images/background-app2.png');
@@ -48,6 +50,8 @@ const AppRoutes = () => (
         <Route path={ROUTES.REFEREES} element={<Referees />} />
         <Route path={ROUTES.EDITREFEREE} element={<EditReferee />} />
         <Route path={ROUTES.DESIGNATE} element={<Designate />} />
+        <Route path={ROUTES.DESIGNATEMATCHS} element={<DesignateMatchs />} />
+        <Route path={ROUTES.DESIGNATEREFEREES} element={<DesignateReferees />} />
         <Route path={ROUTES.MY_DESIGNATIONS} element={<My_designations />} />
         <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
         <Route path={ROUTES.MATCHS} element={<Matchs />} />

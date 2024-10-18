@@ -1,17 +1,19 @@
 export const ROUTES = {
+  STARTPAGE: '/start',
+  LOGIN: '/login',
+  REGISTER: '/register',
   ADMIN: '/admin/:userId',
-  HOME: '/:userId',
   COMPETITIONS: '/competitions/:userId',
   CREATECOMPETITIONS: '/competitions/:userId/create',
   EDITCOMPETITIONS: '/competitions/:userId/edit/:competitionId',
-  REFEREES: '/referees/:userId',
-  EDITREFEREE: '/referees/:adminId/edit/:userId',
-  DESIGNATE: '/designate/userId',
-  MY_DESIGNATIONS: '/my-designations/:userId',
-  DOCUMENTS: '/documents/:userId',
   MATCHS: '/competitions/:userId/matchs/:competitionId',
   EDITMATCHS: '/competitions/:userId/:competitionId/matchs/edit/:matchId',
-  STARTPAGE: '/start',
-  LOGIN: '/login',
-  REGISTER: '/register'
+  REFEREES: '/referees/:userId',
+  EDITREFEREE: '/referees/:adminId/edit/:userId',
+  DESIGNATE: '/designate/:userId',
+  DESIGNATEMATCHS:'/designate/:userId/matchs/:competitionId',
+  DESIGNATEREFEREES:'/designate/:userId/matchs/:competitionId/to/:matchId',
+  HOME: '/:userId',
+  MY_DESIGNATIONS: '/my-designations/:userId',
+  DOCUMENTS: '/documents/:userId'
 }
