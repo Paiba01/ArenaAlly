@@ -11,6 +11,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "noEmit": true,
+    "types": ["vite/client"],
     "paths": {
       "~/*": ["./*"],
       "shared/*": ["../shared/*"]
