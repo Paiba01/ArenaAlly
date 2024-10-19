@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { DesignateMatch } from '~/models/designateMatch'
 import { useDesignateMatch } from '~/hooks/matchs/useDesignateMatch'
+import { useGetActiveUsers } from '~/hooks/users/useGetActiveusers'
 
 const PageContainer = styled.div`
   height: 90vh;
@@ -51,7 +52,7 @@ const SelectGroup = styled.div`
 `
 
 const SmallSelect = styled.select`
-  width: 30%;
+  width: 40%;
   padding: 0.8rem;
   border-radius: 0.25rem;
   margin-right: 3rem;
@@ -106,6 +107,19 @@ const CancelButton = styled.button`
   }
 `
 
+const ErrorText = styled.div`
+  color: #ff0000;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  align-self: center;
+`
+
+const ErrorSelect = styled(SmallSelect)<{ hasError: boolean }>`
+  ${({ hasError }) => hasError && `
+    border: 2px solid #ff0000;
+  `}
+`
+
 export const DesignateReferees = () => {
   const { competitionId, matchId, userId } = useParams()
 
@@ -117,46 +131,49 @@ export const DesignateReferees = () => {
 
   const navigate = useNavigate()
   const editMatch = useDesignateMatch()
+  const { data: activeUsers, isLoading, isError } = useGetActiveUsers()
 
-  const [matchData, setRefereeData] = useState<DesignateMatch>({
+  if (!activeUsers) {
+    return (
+      <div>Error: No se han podido obtener los usuarios activos</div>
+    )
+  }
+
+  const [matchData, setMatchData] = useState<DesignateMatch>({
     id: matchId,
     referee1: '',
     referee2: ''
   })
-  const [errors, setErrors] = useState<Record<string, boolean>>({})
+  const [errors, setErrors] = useState<Record<string, boolean>>({
+    referee1: false,
+    referee2: false
+  })
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
 
-  const handleSelect1Change = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRefereeData({
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, field: 'referee1' | 'referee2') => {
+    setMatchData({
       ...matchData,
-      referee1: e.target.value,
+      [field]: e.target.value,
     })
-  }
-
-  const handleSelect2Change = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRefereeData({
-      ...matchData,
-      referee2: e.target.value,
+    setErrors({
+      ...errors,
+      [field]: false
     })
+    setShowErrorMessage(false)
   }
 
   const validateForm = (): boolean => {
-    const newErrors: Record<string, boolean> = {}
-    let isValid = true
-
-    Object.entries(matchData).forEach(([key, value]) => {
-      if (!value) {
-        newErrors[key] = true
-        isValid = false
-      }
-    })
-
+    const newErrors = {
+      referee1: !matchData.referee1,
+      referee2: !matchData.referee2
+    }
     setErrors(newErrors)
-    return isValid
+    setShowErrorMessage(!matchData.referee1 || !matchData.referee2)
+    return !newErrors.referee1 && !newErrors.referee2
   }
 
   const handleSubmit = () => {
     if (!validateForm()) {
-      console.log('Formulario inválido. Por favor, complete todos los campos.')
       return
     }
 
@@ -166,49 +183,79 @@ export const DesignateReferees = () => {
 
     editMatch.mutate(match, {
       onSuccess: () => {
-        console.log('Competición editada exitosamente')
+        console.log('Partido designado exitosamente')
         navigate(ROUTES.DESIGNATEMATCHS.replace(':competitionId', competitionId).replace(':userId', userId))
       },
       onError: (error) => {
-        console.error('Error al editar la competición:', error)
+        console.error('Error al designar el partido:', error)
       },
     })
   }
 
   const handleCancel = () => {
-    setRefereeData({
-      id: '',
+    setMatchData({
+      id: matchId,
       referee1: '',
       referee2: '',
     })
-
+    setErrors({
+      referee1: false,
+      referee2: false
+    })
+    setShowErrorMessage(false)
     navigate(ROUTES.DESIGNATEMATCHS.replace(':competitionId', competitionId).replace(':userId', userId))
   }
+
+  if (isLoading) return <div>Cargando usuarios...</div>
+  if (isError) return <div>Error al cargar los usuarios</div>
 
   return (
     <PageContainer>
       <EditCard>
-        <EditText>Editor de partidos</EditText>
+        <EditText>Designar árbitros del partido</EditText>
         <Separator />
+        {showErrorMessage && <ErrorText>Deben designarse dos árbitros</ErrorText>}
         <SelectGroup>
-          <SmallSelect
-              name="referee1"
-              value={matchData.referee1}
-              onChange={handleSelect1Change}
+          <ErrorSelect
+            name="referee1"
+            value={matchData.referee1}
+            onChange={(e) => handleSelectChange(e, 'referee1')}
+            hasError={errors.referee1}
           >
-          </SmallSelect>
-          <SmallSelect
-              name="referee2"
-              value={matchData.referee2}
-              onChange={handleSelect2Change}
+            <option value="">Seleccione un árbitro</option>
+            {activeUsers.map((user) => (
+              <option 
+                key={user._id} 
+                value={user._id}
+                disabled={user._id === matchData.referee2}
+              >
+                {user.name}
+              </option>
+            ))}
+          </ErrorSelect>
+          <ErrorSelect
+            name="referee2"
+            value={matchData.referee2}
+            onChange={(e) => handleSelectChange(e, 'referee2')}
+            hasError={errors.referee2}
           >
-          </SmallSelect>
+            <option value="">Seleccione un árbitro</option>
+            {activeUsers.map((user) => (
+              <option 
+                key={user._id} 
+                value={user._id}
+                disabled={user._id === matchData.referee1}
+              >
+                {user.name}
+              </option>
+            ))}
+          </ErrorSelect>
         </SelectGroup>
         <Separator />
         <ButtonGroup>
           <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
           <Button onClick={handleSubmit} disabled={editMatch.isPending}>
-            {editMatch.isPending ? 'Editando...' : 'Editar partido'}
+            {editMatch.isPending ? 'Designando...' : 'Designar'}
           </Button>
         </ButtonGroup>
       </EditCard>
