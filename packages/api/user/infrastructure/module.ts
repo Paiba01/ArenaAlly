@@ -10,6 +10,7 @@ import { userProviders } from './providers'
 import { GetUsersHandler } from '../application/queries/handlers/get-users'
 import { EditUserHandler } from '../application/commands/handlers/edit-user'
 import { GetUserByEmailHandler } from '../application/queries/handlers/get-user-by-email'
+import { GetUsersByIsActiveHandler } from '../application/queries/handlers/getUsers-by-isActive'
 
 const controllers = [UsersController]
 
@@ -18,7 +19,7 @@ const commandHandlers = [
   EditUserHandler,
 ]
 
-const queryHandlers = [GetUserHandler, GetUsersHandler, GetUserByEmailHandler]
+const queryHandlers = [GetUserHandler, GetUsersHandler, GetUserByEmailHandler, GetUsersByIsActiveHandler]
 
 @Module({
   controllers,

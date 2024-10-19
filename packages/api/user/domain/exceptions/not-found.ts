@@ -7,4 +7,7 @@ export class NotFoundUser extends Exception {
     static withEmail(email: string): NotFoundUser {
       return Exception.with(`User with email ${email} cannot be found`)
     }
+    static withIsActive(isActive: boolean): NotFoundUser {
+      return Exception.with(`Cannot found active users`)
+    }
   }

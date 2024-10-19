@@ -1,7 +1,7 @@
 export class GetUsers {
-    private constructor() {}
-  
-    static all(): GetUsers {
-      return new this()
-    }
+  private constructor() {}
+
+  static all(): GetUsers {
+    return new this()
   }
+}

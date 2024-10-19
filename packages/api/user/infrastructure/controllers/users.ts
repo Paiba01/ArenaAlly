@@ -28,6 +28,8 @@ import { EditUserHandler } from '~/user/application/commands/handlers/edit-user'
 import { EditUser } from '~/user/application/commands/edit-user'
 import { GetUserByEmailHandler } from '~/user/application/queries/handlers/get-user-by-email'
 import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
+import { GetUsersByIsActiveHandler } from '~/user/application/queries/handlers/getUsers-by-isActive'
+import { GetUsersByIsActive } from '~/user/application/queries/getUsers-by-isActive'
   
   @ApiTags('Users')
   @Controller('users')
@@ -37,6 +39,7 @@ import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
       private readonly queryBus: QueryBus,
     ) {}
     
+
     @ApiOperation({ summary: 'Gets all Users' })
     @ApiOkResponse({
       description: 'Users',
@@ -46,6 +49,7 @@ import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
     async getUsers(): Promise<UserDto[]> {
       return await this.queryBus.execute(GetUsers.all())
     }
+
 
     @ApiOperation({ summary: 'Get a User' })
     @ApiOkResponse({
@@ -67,6 +71,7 @@ import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
       return response.value
     }
 
+
     @ApiOperation({ summary: 'Get a User by email' })
     @ApiOkResponse({
       description: 'Users/',
@@ -86,6 +91,18 @@ import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
   
       return response.value
     }
+
+
+    @ApiOperation({ summary: 'Get all active users' })
+    @ApiOkResponse({
+        description: 'Active Users',
+        type: [UserDto],
+    })
+    @Get('search/active')
+    async getUsersByIsActive(): Promise<UserDto[]> {
+      return await this.queryBus.execute(GetUsersByIsActive.all())
+    }
+
 
     @ApiOperation({ summary: 'Creates an User' })
     @ApiCreatedResponse({

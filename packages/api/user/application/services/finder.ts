@@ -9,6 +9,7 @@ export type UsersFinder = {
   find(id: UserId): Promise<Result<UserDto, NotFoundUser>>
   getAll(): Promise<UserDto[]>
   findByEmail(email: UserEmail): Promise<Result<UserDto, InvalidUserEmail | NotFoundUser>>
+  findByIsActive(): Promise<UserDto[]>
 }
   
 export const UsersFinder = 'USERS_FINDER'
