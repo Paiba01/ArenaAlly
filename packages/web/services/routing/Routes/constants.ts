@@ -9,7 +9,7 @@ export const ROUTES = {
   MATCHS: '/competitions/:userId/matchs/:competitionId',
   EDITMATCHS: '/competitions/:userId/:competitionId/matchs/edit/:matchId',
   REFEREES: '/referees/:userId',
-  EDITREFEREE: '/referees/:adminId/edit/:userId',
+  EDITREFEREE: '/referees/:userId/edit/:editableUserId',
   DESIGNATE: '/designate/:userId',
   DESIGNATEMATCHS:'/designate/:userId/matchs/:competitionId',
   DESIGNATEREFEREES:'/designate/:userId/matchs/:competitionId/to/:matchId',

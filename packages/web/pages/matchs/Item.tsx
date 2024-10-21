@@ -132,6 +132,7 @@ export const MatchTable = ({ match, userData }: { match: Match, userData:User })
   const handleEditClick = () => {
     navigate(
       ROUTES.EDITMATCHS
+        .replace(':userId', userData._id)
         .replace(':competitionId', match.competitionId)
         .replace(':matchId', match._id)
     )

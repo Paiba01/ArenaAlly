@@ -82,26 +82,26 @@ const StyledIcon = styled.svg`
 `
 
 export const UserTable= ({
-  user,
-  adminId
+  userId,
+  editableUser,
 }: {
-  user: User,
-  adminId: string
+  userId: string,
+  editableUser: User,
 }) => {
-  const statusColor = user.isActive ? 'green' : 'red'
+  const statusColor = editableUser.isActive ? 'green' : 'red'
   const editUser = useEditUser()
 
   const [userData, setUserData] = useState({
-    name: user.name,
-    email: user.email,
-    password: user.password,
-    isActive: user.isActive,
-    isAdmin: user.isAdmin,
+    name: editableUser.name,
+    email: editableUser.email,
+    password: editableUser.password,
+    isActive: editableUser.isActive,
+    isAdmin: editableUser.isAdmin,
   })
 
   const handleActive = () => {
     const updatedUser = {
-      id: user._id,
+      id: editableUser._id,
       ...userData,
       isActive: !userData.isActive, 
     }
@@ -122,7 +122,11 @@ export const UserTable= ({
 
   const navigate = useNavigate()
   const handleEditClick = () => {
-    navigate(`${ROUTES.EDITREFEREE.replace(':userId', user._id).replace(':adminId', adminId)}`)
+    navigate(
+      ROUTES.EDITREFEREE
+      .replace(':userId', userId)
+      .replace(':editableUserId', editableUser._id)
+    )
   }
 
   return (
@@ -130,9 +134,9 @@ export const UserTable= ({
       <CompetitionCard>
         <Elements>
           <LeftColumn>
-            <Name>{user.name}</Name>
+            <Name>{editableUser.name}</Name>
             <p>
-              <Atributes>Correo: {user.email}</Atributes>
+              <Atributes>Correo: {editableUser.email}</Atributes>
             </p>
           </LeftColumn>
           <RightColumn>

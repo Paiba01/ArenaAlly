@@ -62,7 +62,7 @@ export const Referees = () => {
       <PageContainer>
         {data &&
           data.map((user) => (
-            <UserTable key={user._id} user={user} adminId={userId}/>
+            <UserTable key={user._id} userId={userId} editableUser={user}/>
           ))}
       </PageContainer>
     </div>

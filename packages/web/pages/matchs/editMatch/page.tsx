@@ -111,11 +111,11 @@ const CancelButton = styled.button`
 `
 
 export const EditMatchs = () => {
-  const { competitionId, matchId } = useParams()
+  const { userId, competitionId, matchId } = useParams()
 
-  if (!competitionId || !matchId) {
+  if (!userId || !competitionId || !matchId) {
     return (
-      <div>Error: No se han proporcionado un ID de competición o partido.</div>
+      <div>Error: No se han proporcionado un ID de competición, partido o usuario logueado.</div>
     )
   }
 
@@ -168,7 +168,11 @@ export const EditMatchs = () => {
     editMatch.mutate(match, {
       onSuccess: () => {
         console.log('Competición editada exitosamente')
-        navigate(ROUTES.MATCHS.replace(':competitionId', competitionId))
+        navigate(
+          ROUTES.MATCHS
+            .replace(':userId', userId)
+            .replace(':competitionId', competitionId)
+        )
       },
       onError: (error) => {
         console.error('Error al editar la competición:', error)
@@ -181,7 +185,11 @@ export const EditMatchs = () => {
       day: '',
     })
 
-    navigate(ROUTES.MATCHS.replace(':competitionId', competitionId))
+    navigate(
+      ROUTES.MATCHS
+        .replace(':userId', userId)
+        .replace(':competitionId', competitionId)
+    )
   }
 
   return (

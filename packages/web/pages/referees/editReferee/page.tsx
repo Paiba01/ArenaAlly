@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
@@ -125,38 +125,49 @@ const CancelButton = styled.button`
 `
 
 export const EditReferee = () => {
-  const { userId } = useParams()
-  const { adminId } = useParams()
-  if (!userId) {
-    return <div>Error: no se ha proporcionado un ID del usuario.</div>
-  }
-
-  if (!adminId) {
-    return <div>Error: no se ha proporcionado un ID del administrador.</div>
-  }
-
-  const { data } = useGetUser(userId)
-  if (!data) {
-    return <div>Error: no se ha obtenido el usuario.</div>
-  }
-
+  const { userId, editableUserId } = useParams()
   const navigate = useNavigate()
+  const { data: userData, isLoading, isError } = useGetUser(editableUserId)
   const editUser = useEditUser()
 
-  const [userData, setUserData] = useState({
-    name: data.name,
-    email: data.email,
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
     password: '',
-    isActive: data.isActive,
-    isAdmin: data.isAdmin,
+    isActive: false,
+    isAdmin: false,
   })
 
   const [errors, setErrors] = useState<Record<string, boolean>>({})
 
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        name: userData.name,
+        email: userData.email,
+        password: '',
+        isActive: userData.isActive,
+        isAdmin: userData.isAdmin,
+      })
+    }
+  }, [userData])
+
+  if (!userId || !editableUserId) {
+    return <div>Error: no se ha proporcionado un ID del usuario o usuario logueado.</div>
+  }
+
+  if (isLoading) {
+    return <div>Cargando...</div>
+  }
+
+  if (isError || !userData) {
+    return <div>Error: no se ha obtenido el usuario.</div>
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setUserData({
-      ...userData,
+    setFormData({
+      ...formData,
       [name]: value,
     })
 
@@ -168,17 +179,17 @@ export const EditReferee = () => {
   const handleSubmit = () => {
     const user = {
       id: userId,
-      name: userData.name,
-      email: userData.email,
-      password: userData.password || data.password,
-      isActive: data.isActive,
-      isAdmin: data.isAdmin,
+      name: formData.name,
+      email: formData.email,
+      password: formData.password || userData.password,
+      isActive: formData.isActive,
+      isAdmin: formData.isAdmin,
     }
 
     editUser.mutate(user, {
       onSuccess: () => {
         console.log('Usuario editado exitosamente')
-        navigate(`${ROUTES.REFEREES.replace(':userId', adminId)}`)
+        navigate(ROUTES.REFEREES.replace(':userId', userId))
       },
       onError: (error) => {
         console.error('Error al editar el usuario:', error)
@@ -187,15 +198,7 @@ export const EditReferee = () => {
   }
 
   const handleCancel = () => {
-    setUserData({
-        name: '',
-        email: '',
-        password: '',
-        isActive: data.isActive,
-        isAdmin: data.isAdmin,
-    })
-
-    navigate(`${ROUTES.REFEREES.replace(':userId', adminId)}`)
+    navigate(ROUTES.REFEREES.replace(':userId', userId))
   }
 
   return (
@@ -207,14 +210,14 @@ export const EditReferee = () => {
           <SmallInput
             name="name"
             placeholder="Nombre"
-            value={userData.name}
+            value={formData.name}
             onChange={handleInputChange}
             hasError={errors.name}
           />
           <SmallInput
             name="email"
             placeholder="Email"
-            value={userData.email}
+            value={formData.email}
             onChange={handleInputChange}
             hasError={errors.email}
           />
@@ -224,7 +227,7 @@ export const EditReferee = () => {
             type='password'
             name="password"
             placeholder="Contraseña"
-            value={userData.password}
+            value={formData.password}
             onChange={handleInputChange}
             hasError={errors.password}
           />
