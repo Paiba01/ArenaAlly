@@ -38,22 +38,6 @@ const BackButton = styled.button`
   }
 `
 
-const CreateButton = styled.button`
-  background-color: #003787;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.4rem;
-  font-size: 22px;
-  cursor: pointer;
-  margin-top: 5rem;
-  padding: 1rem;
-
-  &:hover {
-    background-color: #002459;
-  }
-`
-
 export const Designate = () => {
   const { userId } = useParams()
   const navigate = useNavigate()
