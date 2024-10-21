@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Competition } from '~/models/competition'
 import EditIcon from 'shared/assets/icons/edit.svg?react'
 import DeleteIcon from 'shared/assets/icons/delete.svg?react'
+import ExcelIcon from 'shared/assets/icons/excel.svg?react'
 import { useDeleteCompetition } from '~/hooks/competitions/useDeleteCompetition'
 import { useState } from 'react'
 import ConfirmationModal from './confirmationModal'
@@ -170,6 +171,12 @@ export const CompetitionTable = ({
                 disabled={deleteCompetition.isPending}
               >
                 <StyledIcon as={DeleteIcon} />
+              </ActionButton>
+              <ActionButton
+                backgroundColor="#00a91b"
+                hoverColor="#017714"
+              >
+                <StyledIcon as={ExcelIcon} />
               </ActionButton>
           </RightColumn>
           )}
