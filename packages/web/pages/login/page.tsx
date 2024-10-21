@@ -131,6 +131,8 @@ export const Login = () => {
         return
       }
 
+      await new Promise(resolve => setTimeout(resolve, 5000))
+
       if (userData.isAdmin) {
         navigate(`${ROUTES.ADMIN.replace(':userId', userData._id)}`)
       } else {

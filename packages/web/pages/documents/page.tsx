@@ -65,7 +65,7 @@ export const Documents = () => {
           color=""
           label={"Reglamento"}
           image="/images/rules.png"
-          documentPath="/documents/reglamento.pdf"
+          documentPath="/documents/Reglamento2022.pdf"
         />
       </LeftColumn>
       <RightColumn>
