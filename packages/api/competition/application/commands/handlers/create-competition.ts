@@ -45,12 +45,14 @@ export class CreateCompetitionHandler implements ICommandHandler {
                 const visitor = Team.fromString(command.teams[j])
                 if (visitor.isErr()) break
 
+                const matchDay = this.getRandomWeekendDate(new Date(command.dateFrom), new Date(command.dateTo))
+
                 const match = Match.create({
                     id: matchId.value,
                     competitionId: competitionId.value,
                     local: local.value,
                     visitor:visitor.value,
-                    day: new Date()
+                    day: matchDay
                 })
 
                 await this.matchs.create(match)
@@ -68,5 +70,18 @@ export class CreateCompetitionHandler implements ICommandHandler {
         
         return ok(await this.competitions.create(competition))
         
+    }
+
+    private getRandomWeekendDate(start: Date, end: Date): Date {
+        const startTime = start.getTime()
+        const endTime = end.getTime()
+        let randomDate: Date
+
+        do {
+            const randomTime = startTime + Math.random() * (endTime - startTime)
+            randomDate = new Date(randomTime)
+        } while (randomDate.getDay() !== 0 && randomDate.getDay() !== 6 && randomDate.getDay() !== 5) 
+
+        return randomDate
     }
 } 
