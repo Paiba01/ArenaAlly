@@ -178,7 +178,7 @@ export const EditReferee = () => {
 
   const handleSubmit = () => {
     const user = {
-      id: userId,
+      id: editableUserId,
       name: formData.name,
       email: formData.email,
       password: formData.password || userData.password,
