@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
@@ -120,27 +120,14 @@ const ErrorSelect = styled(SmallSelect)<{ hasError: boolean }>`
   `}
 `
 
-export const DesignateReferees = () => {
-  const { competitionId, matchId, userId } = useParams()
-
-  if (!competitionId || !matchId || !userId) {
-    return (
-      <div>Error: No se han proporcionado un ID de competición, partido o usuario logueado.</div>
-    )
-  }
-
+export const DesignateReferees: React.FC = () => {
+  const { competitionId, matchId, userId } = useParams<{ competitionId: string; matchId: string; userId: string }>()
   const navigate = useNavigate()
   const editMatch = useDesignateMatch()
   const { data: activeUsers, isLoading, isError } = useGetActiveUsers()
 
-  if (!activeUsers) {
-    return (
-      <div>Error: No se han podido obtener los usuarios activos</div>
-    )
-  }
-
   const [matchData, setMatchData] = useState<DesignateMatch>({
-    id: matchId,
+    id: matchId || '',
     referee1: '',
     referee2: ''
   })
@@ -150,15 +137,22 @@ export const DesignateReferees = () => {
   })
   const [showErrorMessage, setShowErrorMessage] = useState(false)
 
+  useEffect(() => {
+    if (!competitionId || !matchId || !userId) {
+      console.error('Missing required parameters')
+      navigate(ROUTES.HOME)
+    }
+  }, [competitionId, matchId, userId, navigate])
+
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, field: 'referee1' | 'referee2') => {
-    setMatchData({
-      ...matchData,
+    setMatchData(prevData => ({
+      ...prevData,
       [field]: e.target.value,
-    })
-    setErrors({
-      ...errors,
+    }))
+    setErrors(prevErrors => ({
+      ...prevErrors,
       [field]: false
-    })
+    }))
     setShowErrorMessage(false)
   }
 
@@ -177,14 +171,12 @@ export const DesignateReferees = () => {
       return
     }
 
-    const match = {
-      ...matchData,
-    }
-
-    editMatch.mutate(match, {
+    editMatch.mutate(matchData, {
       onSuccess: () => {
         console.log('Partido designado exitosamente')
-        navigate(ROUTES.DESIGNATEMATCHS.replace(':competitionId', competitionId).replace(':userId', userId))
+        if (competitionId && userId) {
+          navigate(ROUTES.DESIGNATEMATCHS.replace(':competitionId', competitionId).replace(':userId', userId))
+        }
       },
       onError: (error) => {
         console.error('Error al designar el partido:', error)
@@ -194,7 +186,7 @@ export const DesignateReferees = () => {
 
   const handleCancel = () => {
     setMatchData({
-      id: matchId,
+      id: matchId || '',
       referee1: '',
       referee2: '',
     })
@@ -203,11 +195,14 @@ export const DesignateReferees = () => {
       referee2: false
     })
     setShowErrorMessage(false)
-    navigate(ROUTES.DESIGNATEMATCHS.replace(':competitionId', competitionId).replace(':userId', userId))
+    if (competitionId && userId) {
+      navigate(ROUTES.DESIGNATEMATCHS.replace(':competitionId', competitionId).replace(':userId', userId))
+    }
   }
 
   if (isLoading) return <div>Cargando usuarios...</div>
   if (isError) return <div>Error al cargar los usuarios</div>
+  if (!activeUsers) return <div>No hay usuarios activos disponibles</div>
 
   return (
     <PageContainer>
