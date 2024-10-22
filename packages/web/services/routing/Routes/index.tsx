@@ -22,18 +22,17 @@ import { Register } from '~/pages/register/page'
 import { DesignateMatchs } from '~/pages/designateMatchs/page'
 import { DesignateReferees } from '~/pages/designateMatchs/designateReferees/page'
 
-const BackgroundContainer = styled.div`
-  background-image: url('/images/background-app2.png');
-  background-size: cover;
-  background-position: center;
+export const BackgroundContainer = styled.div`
+  background-color: #C8E6C9;
   width: 100vw;
   height: calc(100vh - 7rem);
   padding-top: 7rem;
+  overflow-x: hidden;
 `
 
 const Navbar = styled.div`
   position: fixed;
-  background-color: green;
+  background-color: #388E3C;
   height: 7rem;
   top: 0;
   left: 0;
@@ -42,16 +41,15 @@ const Navbar = styled.div`
   align-items: center;
   gap: 4rem;
   justify-content: space-between;
-
 `
 
 const HomeContainer = styled.div`
   color: #004100;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   width: 15rem;
   height: 100%;
-  background-color: #006d00;
+  background-color: #2E7D32;
   display: flex;
   padding: 0 0rem 0 6rem;
   align-items: center;
@@ -60,7 +58,7 @@ const HomeContainer = styled.div`
 
 const CurrentRouteContainer = styled.div`
   color: #004100;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   width: 15rem;
   height: 100%;

@@ -24,12 +24,12 @@ const CenteredContainer = styled.div`
 `
 
 const CompetitionCard = styled.div`
-  background-color: #edf5e9;
+  background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-bottom: 1em;
-  width: 70%;
+  width: 90%;
 `
 
 const Name = styled.div`
@@ -59,7 +59,7 @@ const RightColumn = styled.div`
 
 const Atributes = styled.span`
   font-size: 16px;
-  margin-right: 4em;
+  margin-right: 3em;
 `
 
 const ActionButton = styled.button<{
@@ -197,19 +197,19 @@ export const CompetitionTable = ({
                 <StyledIcon as={EditIcon} />
               </ActionButton>
               <ActionButton
+                backgroundColor="#00a91b"
+                hoverColor="#017714"
+                onClick={handleExportToCsv}
+              >
+                <StyledIcon as={ExcelIcon} />
+              </ActionButton>
+              <ActionButton
                 backgroundColor="#e30000"
                 hoverColor="#c30101"
                 onClick={handleDeleteClick}
                 disabled={deleteCompetition.isPending}
               >
                 <StyledIcon as={DeleteIcon} />
-              </ActionButton>
-              <ActionButton
-                backgroundColor="#00a91b"
-                hoverColor="#017714"
-                onClick={handleExportToCsv}
-              >
-                <StyledIcon as={ExcelIcon} />
               </ActionButton>
             </RightColumn>
           )}

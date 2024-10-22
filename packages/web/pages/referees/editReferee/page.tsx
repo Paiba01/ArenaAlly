@@ -21,7 +21,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow: hidden !important;
 `
 
 const EditCard = styled.div`
@@ -29,7 +29,7 @@ const EditCard = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 3rem;
-  margin-top: 8em;
+  margin-top: 2rem;
   width: 60%;
   height: 65%;
   display: flex;

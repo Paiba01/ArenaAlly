@@ -22,7 +22,7 @@ const CompetitionCard = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-bottom: 1em;
-  width: 70%;
+  width: 90%;
 `
 
 const Name = styled.div`
@@ -43,16 +43,9 @@ const LeftColumn = styled.button`
   cursor: pointer;
 `
 
-const RightColumn = styled.div`
-  width: 25%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`
-
 const Atributes = styled.span`
   font-size: 16px;
-  margin-right: 4em;
+  margin-right: 3em;
 `
 
 const ActionButton = styled.button<{

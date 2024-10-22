@@ -24,7 +24,7 @@ const MatchCard = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-bottom: 1em;
-  width: 70%;
+  width: 90%;
 `
 
 const Teams = styled.div`
@@ -88,7 +88,13 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const MatchTable = ({ match, userId }: { match: Match, userId:string }) => {
+export const MatchTable = ({
+  match,
+  userId,
+}: {
+  match: Match
+  userId: string
+}) => {
   const { data: referee1Data, isLoading: isLoadingReferee1 } = useGetUser(
     match?.referee1 ?? '',
   )
@@ -126,10 +132,9 @@ export const MatchTable = ({ match, userId }: { match: Match, userId:string }) =
 
   const handleEditClick = () => {
     navigate(
-      ROUTES.DESIGNATEREFEREES
-        .replace(':userId', userId)
+      ROUTES.DESIGNATEREFEREES.replace(':userId', userId)
         .replace(':competitionId', match.competitionId)
-        .replace(':matchId', match._id)
+        .replace(':matchId', match._id),
     )
   }
 

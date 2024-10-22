@@ -22,7 +22,7 @@ const EditCard = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 3rem;
-  margin-top: 8em;
+  margin-top: 2.5em;
   width: 60%;
   height: 65%;
   display: flex;
@@ -54,6 +54,7 @@ const SmallInput = styled.input<{ hasError?: boolean }>`
   font-size: 1.2rem;
   color: white;
   margin-bottom: 5rem;
+  margin-top: 5rem;
 
   &::placeholder {
     color: #d1d1d1;
@@ -206,6 +207,10 @@ export const EditMatchs = () => {
           onFocus={(e) => e.target.showPicker()}
           hasError={errors.day}
         />
+        <br />
+        <br />
+        <Separator />
+
         <ButtonGroup>
           <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
           <Button onClick={handleSubmit} disabled={editMatch.isPending}>

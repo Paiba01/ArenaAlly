@@ -20,12 +20,12 @@ const CenteredContainer = styled.div`
 `
 
 const MatchCard = styled.div`
-  background-color: #edf5e9;
+  background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-bottom: 1em;
-  width: 70%;
+  width: 90%;
 `
 
 const Teams = styled.div`

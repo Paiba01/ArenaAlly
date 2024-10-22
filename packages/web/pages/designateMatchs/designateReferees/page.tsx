@@ -20,9 +20,9 @@ const EditCard = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 3rem;
-  margin-top: 8em;
+  margin-top: 0em;
   width: 60%;
-  height: 65%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

@@ -29,7 +29,7 @@ const ButtonContainer = styled.div`
 `
 
 const BackButton = styled.button`
-  background-color: #6500a7;
+  background-color: #1b5e20;
   color: white;
   border: none;
   padding: 1rem 1.5rem;
@@ -39,7 +39,7 @@ const BackButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #480177;
+    background-color: #2e7d32;
   }
 `
 

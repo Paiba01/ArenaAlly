@@ -5,6 +5,7 @@ import { UserTable } from './Item'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { useGetUser } from '~/hooks/users/useGetUser'
+import { Spinner, SpinnerContainer } from '../spinner/item'
 
 
 const PageContainer = styled.div`
@@ -22,7 +23,7 @@ const ButtonContainer = styled.div`
 `
 
 const BackButton = styled.button`
-  background-color: #6500a7;
+  background-color: #1b5e20;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -34,7 +35,7 @@ const BackButton = styled.button`
   padding: 1rem;
  
   &:hover {
-    background-color: #480177;
+    background-color: #2e7d32;
   }
 `
 
@@ -52,7 +53,13 @@ export const Referees = () => {
       navigate(`${ROUTES.ADMIN.replace(':userId', userId)}`)
   }
 
-  if (isLoading) return <>Cargando...</>
+  if (isLoading) {
+    return (
+      <SpinnerContainer>
+        <Spinner />
+      </SpinnerContainer>
+    )
+  }
 
   return (
     <div>
