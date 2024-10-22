@@ -10,6 +10,10 @@ import Toast from './toast'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { User } from '~/models/User'
+import { exportFile } from '~/lib/exportFile'
+import { jsonToCsvHref } from '~/lib/jsonToCsv'
+import { useGetMatchsByCompetitionId } from '~/hooks/matchs/useGetMatchsById'
+import { useGetAllUsers } from '~/hooks/users/useGetAllUsers'
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -86,14 +90,16 @@ const StyledIcon = styled.svg`
 
 export const CompetitionTable = ({
   competition,
-  userData
+  userData,
 }: {
-  competition: Competition,
+  competition: Competition
   userData: User
 }) => {
   const deleteCompetition = useDeleteCompetition()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
+  const { data: matchs } = useGetMatchsByCompetitionId(competition._id)
+  const { data: users } = useGetAllUsers()
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -126,13 +132,39 @@ export const CompetitionTable = ({
   const navigate = useNavigate()
 
   const handleEditClick = () => {
-    navigate(`${ROUTES.EDITCOMPETITIONS.replace(':competitionId', competition._id).replace(':userId', userData._id)}`)
+    navigate(
+      `${ROUTES.EDITCOMPETITIONS.replace(
+        ':competitionId',
+        competition._id,
+      ).replace(':userId', userData._id)}`,
+    )
   }
-  
+
   const handleClick = () => {
-    navigate(`${ROUTES.MATCHS
-      .replace(':competitionId', competition._id)
-      .replace(':userId', userData._id)}`)
+    navigate(
+      `${ROUTES.MATCHS.replace(':competitionId', competition._id).replace(
+        ':userId',
+        userData._id,
+      )}`,
+    )
+  }
+
+  const handleExportToCsv = () => {
+    exportFile(
+      jsonToCsvHref([
+        { ...['Equipos', 'Categoria', 'Fecha', 'Árbitro', 'Árbitro'] },
+        ...(matchs?.map((match) => ({
+          ...[
+            `${match.local} - ${match.visitor}`,
+            competition.category,
+            formatDate(match.day),
+            users?.find((user) => user._id === match.referee1)?.name,
+            users?.find((user) => user._id === match.referee2)?.name,
+          ],
+        })) ?? []),
+      ]),
+      `${competition.name}.csv`,
+    )
   }
 
   return (
@@ -156,7 +188,7 @@ export const CompetitionTable = ({
             </p>
           </LeftColumn>
           {userData?.isAdmin && (
-          <RightColumn>
+            <RightColumn>
               <ActionButton
                 backgroundColor="#e3e300"
                 hoverColor="#cbcb14"
@@ -175,10 +207,11 @@ export const CompetitionTable = ({
               <ActionButton
                 backgroundColor="#00a91b"
                 hoverColor="#017714"
+                onClick={handleExportToCsv}
               >
                 <StyledIcon as={ExcelIcon} />
               </ActionButton>
-          </RightColumn>
+            </RightColumn>
           )}
         </Elements>
       </CompetitionCard>

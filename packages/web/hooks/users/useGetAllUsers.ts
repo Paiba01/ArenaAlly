@@ -3,7 +3,7 @@ import { User } from '~/models/User'
 
 import client from '~/services/http/client'
 
-export const useGetUsers = () => {
+export const useGetAllUsers = () => {
   return useQuery<User[]>({
     queryFn: async () => {
       const response = await client.get('users')

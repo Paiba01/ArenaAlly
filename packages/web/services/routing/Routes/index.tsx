@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { matchPath, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
+import LogoutIcon from 'shared/assets/icons/logoutIcon.svg?react'
 import { ROUTES } from './constants'
 import Home from '~/pages/home/page'
 import { Admin } from '~/pages/admin/page'
@@ -24,34 +25,147 @@ import { DesignateReferees } from '~/pages/designateMatchs/designateReferees/pag
 const BackgroundContainer = styled.div`
   background-image: url('/images/background-app2.png');
   background-size: cover;
-  background-position: center; 
-  width: 100vw; 
-  height: 100vh; 
- 
-`;
+  background-position: center;
+  width: 100vw;
+  height: calc(100vh - 7rem);
+  padding-top: 7rem;
+`
+
+const Navbar = styled.div`
+  position: fixed;
+  background-color: green;
+  height: 7rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  justify-content: space-between;
+
+`
+
+const HomeContainer = styled.div`
+  color: #004100;
+  font-size: 2.5rem;
+  font-weight: bold;
+  width: 15rem;
+  height: 100%;
+  background-color: #006d00;
+  display: flex;
+  padding: 0 0rem 0 6rem;
+  align-items: center;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 3rem) 100%, 0 100%);
+`
+
+const CurrentRouteContainer = styled.div`
+  color: #004100;
+  font-size: 2.5rem;
+  font-weight: bold;
+  width: 15rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+`
+
+const ActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-self: flex-end;
+  color: #004100;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-right: 2rem;
+
+  &:hover > svg {
+    width: 40px;
+    height: 40px;
+  }
+`
+
+const StyledIcon = styled.svg`
+  width: 32px;
+  height: 32px;
+  fill: white;
+`
 
 const LayoutWithBackground = () => {
+const {pathname} = useLocation()
+const navigate = useNavigate()
+  
+  const routes = [
+    {
+      label: 'Partidos',
+      value: '/competitions/:competitionId/matchs/:matchId'
+    },
+    {
+      label: 'Competiciones',
+      value: '/competitions/*'
+    },
+    {
+      label: 'Arbitros',
+      value: '/referees/*'
+    },
+    {
+      label: 'Designar',
+      value: '/designate/*'
+    },
+    {
+      label: 'Designaciones',
+      value: '/my-designations/*'
+    },
+    {
+      label: 'Documentos',
+      value: '/documents/*'
+    }
+  ]
+
+  const activeRoute = routes.find((route) => matchPath(route.value, pathname))
+
   return (
-    <BackgroundContainer>
-      <Outlet /> {}
-    </BackgroundContainer>
-  );
-};
+    <>
+      <BackgroundContainer>
+        <Navbar>
+          <div style={{display: 'flex', height: '100%' }}>
+          <HomeContainer>Arenally</HomeContainer>
+          {activeRoute&&
+          <CurrentRouteContainer>{activeRoute.label}</CurrentRouteContainer>
+        }
+        </div>
+          <ActionButton
+            onClick={() => navigate(ROUTES.STARTPAGE)}
+          >
+            <StyledIcon as={LogoutIcon} />
+          </ActionButton>
+        </Navbar>
+        <Outlet />
+      </BackgroundContainer>
+    </>
+  )
+}
 
 const AppRoutes = () => (
   <Suspense fallback={<>Loading...</>}>
     <Routes>
       <Route element={<LayoutWithBackground />}>
-        <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.ADMIN} element={<Admin />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.COMPETITIONS} element={<Competitions />} />
-        <Route path={ROUTES.CREATECOMPETITIONS} element={<CreateCompetitions />} />
+        <Route
+          path={ROUTES.CREATECOMPETITIONS}
+          element={<CreateCompetitions />}
+        />
         <Route path={ROUTES.EDITCOMPETITIONS} element={<EditCompetitions />} />
         <Route path={ROUTES.REFEREES} element={<Referees />} />
         <Route path={ROUTES.EDITREFEREE} element={<EditReferee />} />
         <Route path={ROUTES.DESIGNATE} element={<Designate />} />
         <Route path={ROUTES.DESIGNATEMATCHS} element={<DesignateMatchs />} />
-        <Route path={ROUTES.DESIGNATEREFEREES} element={<DesignateReferees />} />
+        <Route
+          path={ROUTES.DESIGNATEREFEREES}
+          element={<DesignateReferees />}
+        />
         <Route path={ROUTES.MY_DESIGNATIONS} element={<My_designations />} />
         <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
         <Route path={ROUTES.MATCHS} element={<Matchs />} />
@@ -61,7 +175,7 @@ const AppRoutes = () => (
       <Route path={ROUTES.STARTPAGE} element={<StartPage />} />
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTER} element={<Register />} />
-      
+
       <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
     </Routes>
   </Suspense>

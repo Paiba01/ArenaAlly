@@ -1,6 +1,6 @@
 
 import styled from 'styled-components'
-import { useGetUsers } from '~/hooks/users/useGetAllUsers'
+import { useGetAllUsers } from '~/hooks/users/useGetAllUsers'
 import { UserTable } from './Item'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
@@ -39,7 +39,7 @@ const BackButton = styled.button`
 `
 
 export const Referees = () => {
-  const { data, isLoading } = useGetUsers()
+  const { data, isLoading } = useGetAllUsers()
   const { userId } = useParams()
   
   if (!userId) {
