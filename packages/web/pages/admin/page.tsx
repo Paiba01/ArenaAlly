@@ -27,20 +27,20 @@ export const Admin = () => {
   return (
     <Container>
       <Item
-        color="purple"
+        color="slategrey"
         label={t('ITEMS.COMPETITION')}
         image="/images/competitions.jpeg"
         to={`${ROUTES.COMPETITIONS.replace(':userId', userId)}`}
       />
       <Box>
         <Item
-          color="#d9c600d9"
+          color="darkslategrey"
           label={t('ITEMS.REFEREES')}
           image="/images/referees.jpg"
           to={`${ROUTES.REFEREES.replace(':userId', userId)}`}
         />
         <Item
-          color="blue"
+          color="dimgrey"
           label={t('ITEMS.DESIGNATE')}
           image="/images/designate.jpeg"
           to={`${ROUTES.DESIGNATE.replace(':userId', userId)}`}

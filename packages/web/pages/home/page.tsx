@@ -23,20 +23,20 @@ export const Home = () => {
   return (
     <Container>
       <Item
-        color="red"
+        color="darkslategrey"
         label={t('ITEMS.COMPETITION')}
         image="/images/competitions2.png"
         to={`${ROUTES.COMPETITIONS.replace(':userId', userId)}`}
         />
       <Item
-        color="orange"
+        color="slategrey"
         label={t('ITEMS.DESIGNATIONS')}
         image="/images/designations.png"
         to={`${ROUTES.MY_DESIGNATIONS.replace(':userId', userId)}`}
 
         />
       <Item
-        color="blue"
+        color="darkslategrey"
         label={t('ITEMS.DOCUMENTS')}
         image="/images/documents.png"
         to={`${ROUTES.DOCUMENTS.replace(':userId', userId)}`}

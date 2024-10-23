@@ -1,5 +1,13 @@
 import { Suspense } from 'react'
-import { matchPath, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import {
+  matchPath,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 
 import LogoutIcon from 'shared/assets/icons/logoutIcon.svg?react'
 import { ROUTES } from './constants'
@@ -23,7 +31,7 @@ import { DesignateMatchs } from '~/pages/designateMatchs/page'
 import { DesignateReferees } from '~/pages/designateMatchs/designateReferees/page'
 
 export const BackgroundContainer = styled.div`
-  background-color: #C8E6C9;
+  background-color: #c8e6c9;
   width: 100vw;
   height: calc(100vh - 7rem);
   padding-top: 7rem;
@@ -32,7 +40,7 @@ export const BackgroundContainer = styled.div`
 
 const Navbar = styled.div`
   position: fixed;
-  background-color: #388E3C;
+  background-color: #388e3c;
   height: 7rem;
   top: 0;
   left: 0;
@@ -49,7 +57,7 @@ const HomeContainer = styled.div`
   font-weight: bold;
   width: 15rem;
   height: 100%;
-  background-color: #2E7D32;
+  background-color: #2e7d32;
   display: flex;
   padding: 0 0rem 0 6rem;
   align-items: center;
@@ -90,55 +98,59 @@ const StyledIcon = styled.svg`
 `
 
 const LayoutWithBackground = () => {
-const {pathname} = useLocation()
-const navigate = useNavigate()
-  
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+
   const routes = [
     {
       label: 'Partidos',
-      value: '/competitions/:competitionId/matchs/:matchId'
+      value: '/competitions/:competitionId/matchs/:matchId',
     },
     {
       label: 'Partidos',
-      value: '/competitions/:competitionId/:userId/matchs/edit/*'
+      value: '/competitions/:competitionId/:userId/matchs/edit/*',
     },
     {
       label: 'Competiciones',
-      value: '/competitions/*'
+      value: '/competitions/*',
     },
     {
       label: 'Árbitros',
-      value: '/referees/*'
+      value: '/referees/*',
     },
     {
       label: 'Designar',
-      value: '/designate/*'
+      value: '/designate/*',
     },
     {
       label: 'Designaciones',
-      value: '/my-designations/*'
+      value: '/my-designations/*',
     },
     {
       label: 'Documentos',
-      value: '/documents/*'
-    }
+      value: '/documents/*',
+    },
   ]
 
   const activeRoute = routes.find((route) => matchPath(route.value, pathname))
+
+  const handleClick = () => {
+    setTimeout(() => {
+      navigate(ROUTES.STARTPAGE)
+    }, 1000)
+  }
 
   return (
     <>
       <BackgroundContainer>
         <Navbar>
-          <div style={{display: 'flex', height: '100%' }}>
-          <HomeContainer>Arenally</HomeContainer>
-          {activeRoute&&
-          <CurrentRouteContainer>{activeRoute.label}</CurrentRouteContainer>
-        }
-        </div>
-          <ActionButton
-            onClick={() => navigate(ROUTES.STARTPAGE)}
-          >
+          <div style={{ display: 'flex', height: '100%' }}>
+            <HomeContainer>Arenally</HomeContainer>
+            {activeRoute && (
+              <CurrentRouteContainer>{activeRoute.label}</CurrentRouteContainer>
+            )}
+          </div>
+          <ActionButton onClick={handleClick}>
             <StyledIcon as={LogoutIcon} />
           </ActionButton>
         </Navbar>
@@ -178,7 +190,7 @@ const AppRoutes = () => (
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTER} element={<Register />} />
 
-      <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
+      <Route path="*" element={<Navigate to={ROUTES.STARTPAGE} />} />
     </Routes>
   </Suspense>
 )
