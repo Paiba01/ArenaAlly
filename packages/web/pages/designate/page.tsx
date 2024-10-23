@@ -140,10 +140,6 @@ export const Designate = () => {
   const { userId } = useParams()
   const navigate = useNavigate()
 
-  if (!userId) {
-    return <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
-  }
-
   const [nameInput, setNameInput] = useState('')
   const [categoryInput, setCategoryInput] = useState('')
   const [appliedNameFilter, setAppliedNameFilter] = useState('')
@@ -157,11 +153,16 @@ export const Designate = () => {
   const { data: competitionsData, isLoading: isCompetitionsLoading } =
     useGetCompetitions()
 
+  if (!userId) {
+    return (
+      <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
+    )
+  }
+  
   if (!userData) {
     return <NotFound>Error: no se han obtenido los datos de usuarios.</NotFound>
   }
 
-  
   const filteredCompetitions = useMemo(() => {
     if (!competitionsData) return []
 
@@ -177,7 +178,6 @@ export const Designate = () => {
     })
   }, [competitionsData, appliedNameFilter, appliedCategoryFilter])
 
-  
   const handleBackClick = () => {
     if (userData?.isAdmin === false) {
       navigate(`${ROUTES.HOME.replace(':userId', userId)}`)

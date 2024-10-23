@@ -96,8 +96,6 @@ export const CompetitionTable = ({
 }) => {
 
   const navigate = useNavigate()
-
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   const { data: users } = useGetAllUsers()

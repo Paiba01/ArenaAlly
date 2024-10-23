@@ -160,10 +160,6 @@ export const CreateCompetitions = () => {
   const navigate = useNavigate()
   const { userId } = useParams()
 
-  if (!userId) {
-    return <div>Error: no se ha proporcionado un ID de competición.</div>
-  }
-
   const createCompetition = useCreateCompetition()
   const [competitionData, setCompetitionData] = useState<CreateCompetition>({
     name: '',
@@ -172,6 +168,10 @@ export const CreateCompetitions = () => {
     dateFrom: '',
     dateTo: '',
   })
+
+  if (!userId) {
+    return <div>Error: no se ha proporcionado un ID de competición.</div>
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target

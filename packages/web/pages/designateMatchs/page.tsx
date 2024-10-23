@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { useGetUser } from '~/hooks/users/useGetUser'
 import { useMemo, useState } from 'react'
+import { Spinner, SpinnerContainer } from '../spinner/item'
 
 const MainContainer = styled.div`
   display: flex;
@@ -130,12 +131,27 @@ const FilterButton = styled.button`
   border-radius: 0.4rem;
   font-size: 22px;
   cursor: pointer;
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-left: 3.5rem;
   padding: 1rem 5rem;
 
   &:hover {
     background-color: #2e7d32;
+  }
+`
+
+const CleanButton = styled.button`
+  background-color: #2e7d32;
+  color: white;
+  border-radius: 0.4rem;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-left: 2.8rem;
+  padding: 1rem 4rem;
+
+  &:hover {
+    background-color: #388e3c;
   }
 `
 
@@ -237,7 +253,24 @@ export const DesignateMatchs = () => {
     setAppliedDateTo(dateToInput)
   }
 
-  if (isLoading) return <>Cargando...</>
+  const handleClearFilters = () => {
+    setTeam1Input('')
+    setAppliedTeam1Filter('')
+    setTeam2Input('')
+    setAppliedTeam2Filter('')
+    setDateFromInput('')
+    setAppliedDateFrom('')
+    setDateToInput('')
+    setAppliedDateTo('')
+  }
+
+  if (isLoading) {
+    return (
+      <SpinnerContainer>
+        <Spinner />
+      </SpinnerContainer>
+    )
+  }
 
   return (
     <MainContainer>
@@ -270,6 +303,7 @@ export const DesignateMatchs = () => {
           onChange={(e) => setDateToInput(e.target.value)}
         />
         <FilterButton onClick={handleFilter}>Buscar</FilterButton>
+        <CleanButton onClick={handleClearFilters}>Limpiar filtros</CleanButton>
       </FilterContainer>
 
       <PageContainer>

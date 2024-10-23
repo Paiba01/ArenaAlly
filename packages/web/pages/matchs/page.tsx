@@ -144,7 +144,7 @@ const FilterButton = styled.button`
   border-radius: 0.4rem;
   font-size: 22px;
   cursor: pointer;
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-left: 3.5rem;
   padding: 1rem 5rem;
 
@@ -153,6 +153,21 @@ const FilterButton = styled.button`
     background-color: #2e7d32;
   }
 `
+const CleanButton = styled.button`
+  background-color: #2e7d32;
+  color: white;
+  border-radius: 0.4rem;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-left: 2.8rem;
+  padding: 1rem 4rem;
+
+  &:hover {
+    background-color: #388e3c;
+  }
+`
+
 const isDateInRange = (
   matchDate: string | Date,
   fromDate: string,
@@ -240,6 +255,17 @@ export const Matchs = () => {
     setAppliedDateTo(dateToInput)
   }
 
+  const handleClearFilters = () => {
+    setTeam1Input('')
+    setAppliedTeam1Filter('')
+    setTeam2Input('')
+    setAppliedTeam2Filter('')
+    setDateFromInput('')
+    setAppliedDateFrom('')
+    setDateToInput('')
+    setAppliedDateTo('')
+  }
+
   if (isLoading) {
     return (
       <SpinnerContainer>
@@ -281,6 +307,7 @@ export const Matchs = () => {
           onFocus={(e) => e.target.showPicker()}
         />
         <FilterButton onClick={handleFilter}>Buscar</FilterButton>
+        <CleanButton onClick={handleClearFilters}>Limpiar filtros</CleanButton>
       </FilterContainer>
 
       <PageContainer>

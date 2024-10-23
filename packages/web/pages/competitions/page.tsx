@@ -158,10 +158,6 @@ export const Competitions = () => {
   const { userId } = useParams()
   const navigate = useNavigate()
 
-  if (!userId) {
-    return <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
-  }
-
   const [nameInput, setNameInput] = useState('')
   const [categoryInput, setCategoryInput] = useState('')
   const [appliedNameFilter, setAppliedNameFilter] = useState('')
@@ -176,6 +172,24 @@ export const Competitions = () => {
 
   if (!userData) {
     return <NotFound>Error: no se ha proporcionado un ID de usuario.</NotFound>
+  }
+
+  const filteredCompetitions = useMemo(() => {
+    if (!data) return []
+
+    return data.filter(competition => {
+      const nameMatch = !appliedNameFilter || 
+        competition.name.toLowerCase().includes(appliedNameFilter.toLowerCase())
+
+      const categoryMatch = !appliedCategoryFilter || 
+        competition.category === appliedCategoryFilter
+
+      return nameMatch && categoryMatch
+    })
+  }, [data, appliedNameFilter, appliedCategoryFilter])
+
+  if (!userId) {
+    return <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
   }
 
   const handleClick = () => {
@@ -201,20 +215,6 @@ export const Competitions = () => {
     setAppliedNameFilter('')
     setAppliedCategoryFilter('')
   }
-
-  const filteredCompetitions = useMemo(() => {
-    if (!data) return []
-
-    return data.filter(competition => {
-      const nameMatch = !appliedNameFilter || 
-        competition.name.toLowerCase().includes(appliedNameFilter.toLowerCase())
-
-      const categoryMatch = !appliedCategoryFilter || 
-        competition.category === appliedCategoryFilter
-
-      return nameMatch && categoryMatch
-    })
-  }, [data, appliedNameFilter, appliedCategoryFilter])
 
   if (isLoading) {
     return (
