@@ -6,7 +6,6 @@ import ExcelIcon from 'shared/assets/icons/excel.svg?react'
 import { useDeleteCompetition } from '~/hooks/competitions/useDeleteCompetition'
 import { useState } from 'react'
 import ConfirmationModal from './confirmationModal'
-import Toast from './toast'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { User } from '~/models/User'
@@ -95,41 +94,33 @@ export const CompetitionTable = ({
   competition: Competition
   userData: User
 }) => {
-  const deleteCompetition = useDeleteCompetition()
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [showToast, setShowToast] = useState(false)
-  const { data: matchs } = useGetMatchsByCompetitionId(competition._id)
-  const { data: users } = useGetAllUsers()
-
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }
-    return new Date(dateString).toLocaleDateString('es-ES', options)
-  }
-
-  const handleDeleteClick = () => {
-    setIsDeleteModalOpen(true)
-  }
-
-  const handleConfirmDelete = () => {
-    deleteCompetition.mutate(competition._id, {
-      onSuccess: () => {
-        setIsDeleteModalOpen(false)
-        setShowToast(true)
-
-        setTimeout(() => setShowToast(false), 6000)
-      },
-    })
-  }
-
-  const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false)
-  }
 
   const navigate = useNavigate()
+
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+  const { data: users } = useGetAllUsers()
+  const { data: matchs } = useGetMatchsByCompetitionId(competition._id)
+  const deleteCompetition = useDeleteCompetition()
+
+  const formatDate =  (dateString: string) => {
+      const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }
+      return new Date(dateString).toLocaleDateString('es-ES', options)
+    }
+    
+  const handleClick = () => {
+    navigate(
+      `${ROUTES.MATCHS.replace(':competitionId', competition._id).replace(
+        ':userId',
+        userData._id,
+      )}`,
+    )
+  }
 
   const handleEditClick = () => {
     navigate(
@@ -140,13 +131,16 @@ export const CompetitionTable = ({
     )
   }
 
-  const handleClick = () => {
-    navigate(
-      `${ROUTES.MATCHS.replace(':competitionId', competition._id).replace(
-        ':userId',
-        userData._id,
-      )}`,
-    )
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteCompetition.mutate(competition._id, {})
+  }
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false)
   }
 
   const handleExportToCsv = () => {
@@ -222,13 +216,6 @@ export const CompetitionTable = ({
         title="Confirmar eliminación"
         description={`¿Estás seguro de que quieres eliminar la competición "${competition.name}"?`}
       />
-      {showToast && (
-        <Toast
-          message="La competición ha sido borrada"
-          type="success"
-          duration={6000}
-        />
-      )}
     </CenteredContainer>
   )
 }

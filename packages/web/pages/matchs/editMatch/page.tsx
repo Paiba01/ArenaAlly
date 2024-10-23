@@ -9,7 +9,7 @@ export type EditMatch = {
 }
 
 const PageContainer = styled.div`
-  height: 90vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,8 +41,8 @@ const EditText = styled.span`
 const Separator = styled.hr`
   width: 100%;
   border: 0;
-  border-top: 2px solid white; /* Línea blanca */
-  margin-bottom: 4rem;
+  border-top: 2px solid white;
+  margin-bottom: 2rem;
 `
 
 const SmallInput = styled.input<{ hasError?: boolean }>`

@@ -99,11 +99,15 @@ const navigate = useNavigate()
       value: '/competitions/:competitionId/matchs/:matchId'
     },
     {
+      label: 'Partidos',
+      value: '/competitions/:competitionId/:userId/matchs/edit/*'
+    },
+    {
       label: 'Competiciones',
       value: '/competitions/*'
     },
     {
-      label: 'Arbitros',
+      label: 'Árbitros',
       value: '/referees/*'
     },
     {

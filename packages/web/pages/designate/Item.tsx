@@ -3,7 +3,7 @@ import { Competition } from '~/models/competition'
 import EditIcon from 'shared/assets/icons/edit.svg?react'
 import DeleteIcon from 'shared/assets/icons/delete.svg?react'
 import { useDeleteCompetition } from '~/hooks/competitions/useDeleteCompetition'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
 import { User } from '~/models/User'
@@ -48,32 +48,6 @@ const Atributes = styled.span`
   margin-right: 3em;
 `
 
-const ActionButton = styled.button<{
-  backgroundColor: string
-  hoverColor: string
-}>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 0.8rem;
-  background-color: ${(props) => props.backgroundColor};
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${(props) => props.hoverColor};
-  }
-`
-
-const StyledIcon = styled.svg`
-  width: 20px;
-  height: 20px;
-  fill: white;
-`
-
 export const CompetitionTable = ({
   competition,
   userData
@@ -81,6 +55,9 @@ export const CompetitionTable = ({
   competition: Competition,
   userData: User
 }) => {
+
+  const navigate = useNavigate()
+
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
@@ -90,8 +67,7 @@ export const CompetitionTable = ({
     return new Date(dateString).toLocaleDateString('es-ES', options)
   }
 
-  const navigate = useNavigate()
-  
+
   const handleClick = () => {
     navigate(`${ROUTES.DESIGNATEMATCHS
       .replace(':competitionId', competition._id)

@@ -158,15 +158,14 @@ export const Competitions = () => {
   const { userId } = useParams()
   const navigate = useNavigate()
 
+  if (!userId) {
+    return <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
+  }
+
   const [nameInput, setNameInput] = useState('')
   const [categoryInput, setCategoryInput] = useState('')
-
   const [appliedNameFilter, setAppliedNameFilter] = useState('')
   const [appliedCategoryFilter, setAppliedCategoryFilter] = useState('')
-
-  if (!userId) {
-    return <div>Error: no se ha proporcionado un ID de competición.</div>
-  }
 
   const {
     data: userData,
@@ -176,22 +175,8 @@ export const Competitions = () => {
   const { data, isLoading } = useGetCompetitions()
 
   if (!userData) {
-    return <div>Error: no se ha proporcionado un ID de usuario.</div>
+    return <NotFound>Error: no se ha proporcionado un ID de usuario.</NotFound>
   }
-
-  const filteredCompetitions = useMemo(() => {
-    if (!data) return []
-
-    return data.filter(competition => {
-      const nameMatch = !appliedNameFilter || 
-        competition.name.toLowerCase().includes(appliedNameFilter.toLowerCase())
-
-      const categoryMatch = !appliedCategoryFilter || 
-        competition.category === appliedCategoryFilter
-
-      return nameMatch && categoryMatch
-    })
-  }, [data, appliedNameFilter, appliedCategoryFilter])
 
   const handleClick = () => {
     navigate(`${ROUTES.CREATECOMPETITIONS.replace(':userId', userId)}`)
@@ -216,6 +201,20 @@ export const Competitions = () => {
     setAppliedNameFilter('')
     setAppliedCategoryFilter('')
   }
+
+  const filteredCompetitions = useMemo(() => {
+    if (!data) return []
+
+    return data.filter(competition => {
+      const nameMatch = !appliedNameFilter || 
+        competition.name.toLowerCase().includes(appliedNameFilter.toLowerCase())
+
+      const categoryMatch = !appliedCategoryFilter || 
+        competition.category === appliedCategoryFilter
+
+      return nameMatch && categoryMatch
+    })
+  }, [data, appliedNameFilter, appliedCategoryFilter])
 
   if (isLoading) {
     return (

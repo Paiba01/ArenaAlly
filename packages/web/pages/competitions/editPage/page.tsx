@@ -12,7 +12,7 @@ export type EditCompetition = {
 }
 
 const PageContainer = styled.div`
-  height: 90vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +25,7 @@ const EditCard = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 3rem;
-  margin-top: 8em;
+  margin-top: 2.5rem;
   width: 60%;
   height: 65%;
   display: flex;
@@ -44,8 +44,9 @@ const EditText = styled.span`
 const Separator = styled.hr`
   width: 100%;
   border: 0;
-  border-top: 2px solid white; /* Línea blanca */
+  border-top: 2px solid white;
   margin-bottom: 4rem;
+  margin-top: 2rem;
 `
 
 const InputGroup = styled.div`
@@ -284,6 +285,8 @@ export const EditCompetitions = () => {
             hasError={errors.dateTo}
           />
         </InputGroup>
+
+        <Separator />
         <ButtonGroup>
           <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
           <Button onClick={handleSubmit} disabled={editCompetition.isPending}>

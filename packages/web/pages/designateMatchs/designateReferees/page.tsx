@@ -7,7 +7,7 @@ import { useDesignateMatch } from '~/hooks/matchs/useDesignateMatch'
 import { useGetActiveUsers } from '~/hooks/users/useGetActiveusers'
 
 const PageContainer = styled.div`
-  height: 90vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,7 +20,7 @@ const EditCard = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 3rem;
-  margin-top: 0em;
+  margin-top: 2.5em;
   width: 60%;
   height: 60%;
   display: flex;
@@ -40,7 +40,7 @@ const Separator = styled.hr`
   width: 100%;
   border: 0;
   border-top: 2px solid white; /* Línea blanca */
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 `
 
 const SelectGroup = styled.div`

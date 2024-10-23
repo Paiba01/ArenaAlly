@@ -271,12 +271,14 @@ export const Matchs = () => {
           name="dateFrom" 
           value={dateFromInput}
           onChange={(e) => setDateFromInput(e.target.value)}
+          onFocus={(e) => e.target.showPicker()}
         />
         <DateInput 
           type="date" 
           name="dateTo" 
           value={dateToInput}
           onChange={(e) => setDateToInput(e.target.value)}
+          onFocus={(e) => e.target.showPicker()}
         />
         <FilterButton onClick={handleFilter}>Buscar</FilterButton>
       </FilterContainer>

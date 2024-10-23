@@ -5,7 +5,6 @@ import { Match } from '~/models/match'
 import { useGetUser } from '~/hooks/users/useGetUser'
 import { useState } from 'react'
 import ConfirmationModal from '../competitions/confirmationModal'
-import Toast from '../competitions/toast'
 import { useDeleteMatch } from '~/hooks/matchs/useDeleteMatch'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '~/services/routing/Routes/constants'
@@ -103,7 +102,6 @@ export const MatchTable = ({
   )
   const deleteMatch = useDeleteMatch()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [showToast, setShowToast] = useState(false)
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -116,12 +114,7 @@ export const MatchTable = ({
 
   const handleConfirmDelete = () => {
     deleteMatch.mutate(match._id, {
-      onSuccess: () => {
-        setIsDeleteModalOpen(false)
-        setShowToast(true)
-
-        setTimeout(() => setShowToast(false), 6000)
-      },
+      
     })
   }
 
@@ -171,13 +164,6 @@ export const MatchTable = ({
         title="Confirmar eliminación"
         description={`¿Estás seguro de que quieres eliminar este partido?`}
       />
-      {showToast && (
-        <Toast
-          message="El partido ha sido borrado"
-          type="success"
-          duration={6000}
-        />
-      )}
     </CenteredContainer>
   )
 }

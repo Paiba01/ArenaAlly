@@ -140,46 +140,49 @@ export const Designate = () => {
   const { userId } = useParams()
   const navigate = useNavigate()
 
+  if (!userId) {
+    return <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
+  }
+
   const [nameInput, setNameInput] = useState('')
   const [categoryInput, setCategoryInput] = useState('')
-
   const [appliedNameFilter, setAppliedNameFilter] = useState('')
   const [appliedCategoryFilter, setAppliedCategoryFilter] = useState('')
-
-  if (!userId) {
-    return <div>Error: no se ha proporcionado un ID de competición.</div>
-  }
 
   const {
     data: userData,
     isLoading: isUserLoading,
     error: userError,
   } = useGetUser(userId)
-  const { data, isLoading } = useGetCompetitions()
+  const { data: competitionsData, isLoading: isCompetitionsLoading } =
+    useGetCompetitions()
 
   if (!userData) {
-    return <div>Error: no se ha proporcionado un ID de usuario.</div>
+    return <NotFound>Error: no se han obtenido los datos de usuarios.</NotFound>
   }
 
+  
   const filteredCompetitions = useMemo(() => {
-    if (!data) return []
+    if (!competitionsData) return []
 
-    return data.filter(competition => {
-      const nameMatch = !appliedNameFilter || 
+    return competitionsData.filter((competition) => {
+      const nameMatch =
+        !appliedNameFilter ||
         competition.name.toLowerCase().includes(appliedNameFilter.toLowerCase())
 
-      const categoryMatch = !appliedCategoryFilter || 
-        competition.category === appliedCategoryFilter
+      const categoryMatch =
+        !appliedCategoryFilter || competition.category === appliedCategoryFilter
 
       return nameMatch && categoryMatch
     })
-  }, [data, appliedNameFilter, appliedCategoryFilter])
+  }, [competitionsData, appliedNameFilter, appliedCategoryFilter])
 
+  
   const handleBackClick = () => {
-    if (userData?.isAdmin == false) {
-      navigate(`${ROUTES.HOME.replace(':userId', userData._id)}`)
+    if (userData?.isAdmin === false) {
+      navigate(`${ROUTES.HOME.replace(':userId', userId)}`)
     } else {
-      navigate(`${ROUTES.ADMIN.replace(':userId', userData._id)}`)
+      navigate(`${ROUTES.ADMIN.replace(':userId', userId)}`)
     }
   }
 
@@ -195,25 +198,25 @@ export const Designate = () => {
     setAppliedCategoryFilter('')
   }
 
-  if (isLoading) {
+  if (isCompetitionsLoading || isUserLoading) {
     return (
       <SpinnerContainer>
         <Spinner />
       </SpinnerContainer>
     )
   }
-  
+
   return (
     <MainContainer>
       <FilterContainer>
         <FilterText>Filtros</FilterText>
-        <SmallInput 
-          name="Nombre" 
-          placeholder="Buscar por nombre" 
+        <SmallInput
+          name="Nombre"
+          placeholder="Buscar por nombre"
           value={nameInput}
           onChange={(e) => setNameInput(e.target.value)}
         />
-        <SmallSelect 
+        <SmallSelect
           name="category"
           value={categoryInput}
           onChange={(e) => setCategoryInput(e.target.value)}
@@ -226,15 +229,15 @@ export const Designate = () => {
           <option value="SENIOR">SENIOR</option>
         </SmallSelect>
         <br />
-          <FilterButton onClick={handleFilter}>Buscar</FilterButton>
-          <CleanButton onClick={handleClearFilters}>Limpiar filtros</CleanButton>
+        <FilterButton onClick={handleFilter}>Buscar</FilterButton>
+        <CleanButton onClick={handleClearFilters}>Limpiar filtros</CleanButton>
       </FilterContainer>
 
       <PageContainer>
         <ButtonContainer>
           <BackButton onClick={handleBackClick}>Volver</BackButton>
         </ButtonContainer>
-        
+
         {filteredCompetitions.length > 0 ? (
           filteredCompetitions.map((competition) => (
             <CompetitionTable
@@ -244,7 +247,9 @@ export const Designate = () => {
             />
           ))
         ) : (
-          <NotFound>No se encontraron competiciones con los filtros aplicados</NotFound>
+          <NotFound>
+            No se encontraron competiciones con los filtros aplicados
+          </NotFound>
         )}
       </PageContainer>
     </MainContainer>

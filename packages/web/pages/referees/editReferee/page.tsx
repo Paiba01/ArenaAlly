@@ -16,7 +16,7 @@ export type EditCompetition = {
 }
 
 const PageContainer = styled.div`
-  height: 90vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,6 +50,7 @@ const Separator = styled.hr`
   border: 0;
   border-top: 2px solid white; /* Línea blanca */
   margin-bottom: 4rem;
+  margin-top: 2rem;
 `
 
 const InputGroup = styled.div`
@@ -91,7 +92,6 @@ const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80%;
-  margin-top: 3em;
 `
 
 const Button = styled.button`
@@ -232,6 +232,7 @@ export const EditReferee = () => {
             hasError={errors.password}
           />
         </InputGroup>
+        <Separator />
         <ButtonGroup>
           <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
           <Button onClick={handleSubmit} disabled={editUser.isPending}>

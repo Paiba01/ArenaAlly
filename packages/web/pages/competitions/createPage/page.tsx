@@ -14,7 +14,7 @@ export type CreateCompetition = {
 }
 
 const PageContainer = styled.div`
-  height: 90vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,7 +27,7 @@ const CreateCard = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 3rem;
-  margin-top: 8em;
+  margin-top: 2.5em;
   width: 60%;
   height: 65%;
   display: flex;
@@ -47,7 +47,7 @@ const Separator = styled.hr`
   width: 100%;
   border: 0;
   border-top: 2px solid white; /* Línea blanca */
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 `
 
 const InputGroup = styled.div`
@@ -109,7 +109,7 @@ const Input = styled.input`
   width: 84%;
   padding: 0.8rem;
   margin-right: 3rem;
-  margin-bottom: 5rem;
+  margin-bottom: 2.5rem;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
   font-size: 1.2rem;
@@ -277,8 +277,7 @@ export const CreateCompetitions = () => {
             })
           }
         />
-
-        
+        <Separator />
         <ButtonGroup>
           <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
           <Button onClick={handleSubmit} disabled={createCompetition.isPending}>
