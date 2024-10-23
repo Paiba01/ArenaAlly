@@ -36,6 +36,7 @@ export const BackgroundContainer = styled.div`
   height: calc(100vh - 7rem);
   padding-top: 7rem;
   overflow-x: hidden;
+  font-family: 'circular';
 `
 
 const Navbar = styled.div`

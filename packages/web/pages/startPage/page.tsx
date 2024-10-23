@@ -13,6 +13,7 @@ const StartPageContainer = styled.div`
   background-size: cover;
   background-position: center;
   overflow: hidden;
+  font-family: 'circular';
 `
 
 const Title = styled.h1`
