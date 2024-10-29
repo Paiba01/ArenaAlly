@@ -56,14 +56,14 @@ const StatusIndicator = styled.span<{ isActive: boolean }>`
 `
 
 const ActionButton = styled.button<{
-  backgroundColor: string
-  hoverColor: string
+  $backgroundColor: string
+  $hoverColor: string
 }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-right: 0.8rem;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$backgroundColor};
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -71,7 +71,7 @@ const ActionButton = styled.button<{
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => props.hoverColor};
+    background-color: ${(props) => props.$hoverColor};
   }
 `
 
@@ -141,13 +141,13 @@ export const UserTable= ({
           </LeftColumn>
           <RightColumn>
             <ActionButton
-              backgroundColor={statusColor}
-              hoverColor={userData.isActive ? '#00a000' : '#bd0000'}
+              $backgroundColor={statusColor}
+              $hoverColor={userData.isActive ? '#00a000' : '#bd0000'}
               onClick={handleActive}
             >
               <StyledIcon as={isActiveIcon} />
             </ActionButton>
-            <ActionButton backgroundColor="#e3e300" hoverColor="#cbcb14" onClick={handleEditClick}>
+            <ActionButton $backgroundColor="#e3e300" $hoverColor="#cbcb14" onClick={handleEditClick}>
               <StyledIcon as={EditIcon} />
             </ActionButton>
           </RightColumn>

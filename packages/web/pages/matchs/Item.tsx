@@ -63,14 +63,14 @@ const Atributes = styled.span`
   font-size: 18px;
 `
 const ActionButton = styled.button<{
-  backgroundColor: string
-  hoverColor: string
+  $backgroundColor: string
+  $hoverColor: string
 }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-right: 0.8rem;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$backgroundColor};
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -78,7 +78,7 @@ const ActionButton = styled.button<{
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => props.hoverColor};
+    background-color: ${(props) => props.$hoverColor};
   }
 `
 
@@ -88,7 +88,13 @@ const StyledIcon = styled.svg`
   fill: white;
 `
 
-export const MatchTable = ({ match, userData }: { match: Match, userData:User }) => {
+export const MatchTable = ({
+  match,
+  userData,
+}: {
+  match: Match
+  userData: User
+}) => {
   const { data: referee1Data, isLoading: isLoadingReferee1 } = useGetUser(
     match?.referee1 ?? '',
   )
@@ -112,9 +118,7 @@ export const MatchTable = ({ match, userData }: { match: Match, userData:User })
   }
 
   const handleConfirmDelete = () => {
-    deleteMatch.mutate(match._id, {
-      
-    })
+    deleteMatch.mutate(match._id, {})
   }
 
   const handleCancelDelete = () => {
@@ -124,10 +128,9 @@ export const MatchTable = ({ match, userData }: { match: Match, userData:User })
 
   const handleEditClick = () => {
     navigate(
-      ROUTES.EDITMATCHS
-        .replace(':userId', userData._id)
+      ROUTES.EDITMATCHS.replace(':userId', userData._id)
         .replace(':competitionId', match.competitionId)
-        .replace(':matchId', match._id)
+        .replace(':matchId', match._id),
     )
   }
 
@@ -147,23 +150,23 @@ export const MatchTable = ({ match, userData }: { match: Match, userData:User })
             </p>
           </LeftColumn>
           {userData?.isAdmin && (
-          <RightColumn>
-            <ActionButton
-              backgroundColor="#e3e300"
-              hoverColor="#cbcb14"
-              onClick={handleEditClick}
-            >
-              <StyledIcon as={EditIcon} />
-            </ActionButton>
-            <ActionButton
-              backgroundColor="#e30000"
-              hoverColor="#c30101"
-              onClick={handleDeleteClick}
-              disabled={deleteMatch.isPending}
-            >
-              <StyledIcon as={DeleteIcon} />
-            </ActionButton>
-          </RightColumn>
+            <RightColumn>
+              <ActionButton
+                $backgroundColor="#e3e300"
+                $hoverColor="#cbcb14"
+                onClick={handleEditClick}
+              >
+                <StyledIcon as={EditIcon} />
+              </ActionButton>
+              <ActionButton
+                $backgroundColor="#e30000"
+                $hoverColor="#c30101"
+                onClick={handleDeleteClick}
+                disabled={deleteMatch.isPending}
+              >
+                <StyledIcon as={DeleteIcon} />
+              </ActionButton>
+            </RightColumn>
           )}
         </Elements>
       </MatchCard>

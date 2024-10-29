@@ -57,31 +57,7 @@ const Atributes = styled.span`
   font-size: 18px;
   
 `
-const ActionButton = styled.button<{
-  backgroundColor: string
-  hoverColor: string
-}>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 0.8rem;
-  background-color: ${(props) => props.backgroundColor};
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
 
-  &:hover {
-    background-color: ${(props) => props.hoverColor};
-  }
-`
-
-const StyledIcon = styled.svg`
-  width: 20px;
-  height: 20px;
-  fill: white;
-`
 
 export const MatchTable = ({ match }: { match: Match }) => {
   const { data: referee1Data, isLoading: isLoadingReferee1 } = useGetUser(

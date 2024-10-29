@@ -58,18 +58,18 @@ const RightColumn = styled.div`
 
 const Atributes = styled.span`
   font-size: 16px;
-  margin-right: 3em;
+  margin-right: 2em;
 `
 
 const ActionButton = styled.button<{
-  backgroundColor: string
-  hoverColor: string
+  $backgroundColor: string
+  $hoverColor: string
 }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-right: 0.8rem;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$backgroundColor};
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -77,7 +77,7 @@ const ActionButton = styled.button<{
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => props.hoverColor};
+    background-color: ${(props) => props.$hoverColor};
   }
 `
 
@@ -182,22 +182,22 @@ export const CompetitionTable = ({
           {userData?.isAdmin && (
             <RightColumn>
               <ActionButton
-                backgroundColor="#e3e300"
-                hoverColor="#cbcb14"
+                $backgroundColor="#e3e300"
+                $hoverColor="#cbcb14"
                 onClick={handleEditClick}
               >
                 <StyledIcon as={EditIcon} />
               </ActionButton>
               <ActionButton
-                backgroundColor="#00a91b"
-                hoverColor="#017714"
+                $backgroundColor="#00a91b"
+                $hoverColor="#017714"
                 onClick={handleExportToCsv}
               >
                 <StyledIcon as={ExcelIcon} />
               </ActionButton>
               <ActionButton
-                backgroundColor="#e30000"
-                hoverColor="#c30101"
+                $backgroundColor="#e30000"
+                $hoverColor="#c30101"
                 onClick={handleDeleteClick}
                 disabled={deleteCompetition.isPending}
               >

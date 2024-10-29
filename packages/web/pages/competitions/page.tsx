@@ -163,45 +163,42 @@ export const Competitions = () => {
   const [appliedNameFilter, setAppliedNameFilter] = useState('')
   const [appliedCategoryFilter, setAppliedCategoryFilter] = useState('')
 
-  const {
-    data: userData,
-    isLoading: isUserLoading,
-    error: userError,
-  } = useGetUser(userId)
+  const { data: userData, isLoading: isUserDataLoading } = useGetUser(userId)
   const { data, isLoading } = useGetCompetitions()
 
-  if (!userData) {
-    return <NotFound>Error: no se ha proporcionado un ID de usuario.</NotFound>
-  }
 
   const filteredCompetitions = useMemo(() => {
     if (!data) return []
 
-    return data.filter(competition => {
-      const nameMatch = !appliedNameFilter || 
+    return data.filter((competition) => {
+      const nameMatch =
+        !appliedNameFilter ||
         competition.name.toLowerCase().includes(appliedNameFilter.toLowerCase())
 
-      const categoryMatch = !appliedCategoryFilter || 
-        competition.category === appliedCategoryFilter
+      const categoryMatch =
+        !appliedCategoryFilter || competition.category === appliedCategoryFilter
 
       return nameMatch && categoryMatch
     })
   }, [data, appliedNameFilter, appliedCategoryFilter])
 
+  if (isLoading || isUserDataLoading) {
+    return (
+      <SpinnerContainer>
+        <Spinner />
+      </SpinnerContainer>
+    )
+  }
+
+
+  if (!userData) {
+    return <NotFound>Error: no se ha proporcionado un ID de usuario.</NotFound>
+  }
+
   if (!userId) {
-    return <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
-  }
-
-  const handleClick = () => {
-    navigate(`${ROUTES.CREATECOMPETITIONS.replace(':userId', userId)}`)
-  }
-
-  const handleBackClick = () => {
-    if (userData?.isAdmin == false) {
-      navigate(`${ROUTES.HOME.replace(':userId', userData._id)}`)
-    } else {
-      navigate(`${ROUTES.ADMIN.replace(':userId', userData._id)}`)
-    }
+    return (
+      <NotFound>Error: no se ha proporcionado un ID de competición.</NotFound>
+    )
   }
 
   const handleFilter = () => {
@@ -216,25 +213,33 @@ export const Competitions = () => {
     setAppliedCategoryFilter('')
   }
 
-  if (isLoading) {
-    return (
-      <SpinnerContainer>
-        <Spinner />
-      </SpinnerContainer>
-    )
+  const handleClick = () => {
+    navigate(`${ROUTES.CREATECOMPETITIONS.replace(':userId', userId)}`)
   }
+
+  const handleBackClick = () => {
+    if (userData?.isAdmin == false) {
+      navigate(`${ROUTES.HOME.replace(':userId', userData._id)}`)
+    } else {
+      navigate(`${ROUTES.ADMIN.replace(':userId', userData._id)}`)
+    }
+  }
+
+
+
+
 
   return (
     <MainContainer>
       <FilterContainer>
         <FilterText>Filtros</FilterText>
-        <SmallInput 
-          name="Nombre" 
-          placeholder="Buscar por nombre" 
+        <SmallInput
+          name="Nombre"
+          placeholder="Buscar por nombre"
           value={nameInput}
           onChange={(e) => setNameInput(e.target.value)}
         />
-        <SmallSelect 
+        <SmallSelect
           name="category"
           value={categoryInput}
           onChange={(e) => setCategoryInput(e.target.value)}
@@ -247,8 +252,8 @@ export const Competitions = () => {
           <option value="SENIOR">SENIOR</option>
         </SmallSelect>
         <br />
-          <FilterButton onClick={handleFilter}>Buscar</FilterButton>
-          <CleanButton onClick={handleClearFilters}>Limpiar filtros</CleanButton>
+        <FilterButton onClick={handleFilter}>Buscar</FilterButton>
+        <CleanButton onClick={handleClearFilters}>Limpiar filtros</CleanButton>
       </FilterContainer>
 
       <PageContainer>
@@ -258,7 +263,7 @@ export const Competitions = () => {
             <CreateButton onClick={handleClick}>Crear competición</CreateButton>
           )}
         </ButtonContainer>
-        
+
         {filteredCompetitions.length > 0 ? (
           filteredCompetitions.map((competition) => (
             <CompetitionTable
@@ -268,7 +273,9 @@ export const Competitions = () => {
             />
           ))
         ) : (
-          <NotFound>No se encontraron competiciones con los filtros aplicados</NotFound>
+          <NotFound>
+            No se encontraron competiciones con los filtros aplicados
+          </NotFound>
         )}
       </PageContainer>
     </MainContainer>

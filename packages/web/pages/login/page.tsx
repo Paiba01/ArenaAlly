@@ -107,7 +107,7 @@ export const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate()
-  const { refetch: getUserByEmail, data: userData, isError, error } = useGetUserByEmail(email)
+  const { refetch: getUserByEmail, data: userData, isError } = useGetUserByEmail(email)
 
   const handleClick = async () => {
     setEmailError('')
