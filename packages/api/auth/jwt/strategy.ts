@@ -3,19 +3,13 @@ import { ConfigService } from '@nestjs/config'
 import { QueryBus } from '@nestjs/cqrs'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { GetUserByEmail } from '~/user/application/queries/get-user-by-email'
-import { PassportStrategy } from '@nestjs/passport'
+
 
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService, private queryBus: QueryBus) {
-    super({
-      ignoreExpiration: false,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('jwt.secret'),
-    })
-  }
-
+export class JwtStrategy extends Strategy {
+  queryBus: any
+  
   async validate(payload: { email: string }) {
     const user = await this.queryBus.execute(
       GetUserByEmail.with({ email: payload.email }),
