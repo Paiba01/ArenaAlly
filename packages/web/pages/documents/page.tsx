@@ -63,20 +63,20 @@ export const Documents = () => {
         </ButtonContainer>
         <Item
           color=""
-          label={"Reglamento"}
+          label={""}
           image="/images/rules.png"
           documentPath="/documents/Reglamento2022.pdf"
         />
       </LeftColumn>
       <RightColumn>
         <Item
-          color="brown"
+          color="aquamarine"
           label={"Plantilla exclusión"}
           image="/images/2min.png"
           documentPath="/documents/plantilla_exclusion.pdf"
         />
         <Item
-          color="pink"
+          color="darkcyan"
           label={"Jugador lesionado"}
           image="/images/issue.png"
           documentPath="/documents/jugador_lesionado.pdf"
