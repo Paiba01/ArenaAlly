@@ -15,19 +15,29 @@ export class UserSchema {
   @Prop()
   readonly password: string
 
+  @Prop()
+  readonly isActive: boolean
+
+  @Prop()
+  readonly isAdmin: boolean
+
   constructor(
     _id: UserSchema['_id'],
     name: UserSchema['name'],
     email: UserSchema['email'],
     password: UserSchema['password'],
+    isActive: UserSchema['isActive'],
+    isAdmin: UserSchema['isAdmin'],
   ) {
     this._id = _id
     this.name = name
     this.email = email
     this.password = password
+    this.isActive = isActive
+    this.isAdmin = isAdmin
   }
 
-  static fromUser({ id, name, email, password }: User) {
-    return new this(id.value, name.value, email.value, password.value)
+  static fromUser({ id, name, email, password, isActive, isAdmin }: User) {
+    return new this(id.value, name.value, email.value, password.value, isActive, isAdmin)
   }
 }

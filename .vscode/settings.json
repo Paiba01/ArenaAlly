@@ -1,0 +1,5 @@
+{
+  "conventionalCommits.scopes": ["common", "api", "web"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}

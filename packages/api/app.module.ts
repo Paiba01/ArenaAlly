@@ -5,8 +5,9 @@ import { ConsoleModule } from 'nestjs-console'
 
 import LoggerMiddleware from '~/middleware/logger'
 
-import ScopeModule from './scope/infrastructure/module'
 import { UserModule } from './user/infrastructure/module'
+import { MatchModule } from './match/infrastructure/module'
+import { CompetitionModule } from './competition/infrastructure/module'
 
 @Module({
   imports: [
@@ -21,8 +22,9 @@ import { UserModule } from './user/infrastructure/module'
     }),
     ConsoleModule,
     MongooseModule.forRoot(process.env.MONGODB_URI || '', {}),
-    ScopeModule,
     UserModule,
+    MatchModule,
+    CompetitionModule,
   ],
 })
 export class AppModule implements NestModule {
