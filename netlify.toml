@@ -1,0 +1,14 @@
+[build]
+  command = "npm run deploy"  # Comando global de despliegue
+
+[[build.commands]]
+  command = "docker-compose up -d"  # Levanta los servicios con Docker
+  publish = "."  # Publica desde el directorio principal
+
+[[build.commands]]
+  command = "npm run start"  # Inicia servicios en el directorio principal
+  publish = "."
+
+[[build.commands]]
+  command = "cd packages/web && npm start"  # Inicia el frontend
+  publish = "packages/web/build"  # Ruta donde se genera el build del frontend
