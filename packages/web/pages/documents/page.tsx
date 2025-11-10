@@ -73,13 +73,13 @@ export const Documents = () => {
           color="aquamarine"
           label={"Plantilla exclusión"}
           image="/images/2min.png"
-          documentPath="/documents/plantilla_exclusion.pdf"
+          documentPath="/documents/2min.pdf"
         />
         <Item
           color="darkcyan"
           label={"Jugador lesionado"}
           image="/images/issue.png"
-          documentPath="/documents/jugador_lesionado.pdf"
+          documentPath="/documents/lesionado.pdf"
         />
       </RightColumn>
     </Container>
